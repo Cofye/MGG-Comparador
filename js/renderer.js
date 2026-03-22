@@ -403,8 +403,8 @@ function getMultiplier(mode) {
 
 
 async function loadNames() {
-  const txt = await fetch("https://s-beta.kobojo.com/mutants/gameconfig/localisation_es.txt")
-    .then(r => r.text());
+  const txt = await fetch(`https://s-beta.kobojo.com/mutants/gameconfig/localisation_es.txt?t=${Date.now()}`)
+  .then(r => r.text());
 
   const map = {};
 
