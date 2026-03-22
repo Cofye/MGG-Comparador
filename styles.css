@@ -1,0 +1,157 @@
+body {
+  background: #111;
+  color: white;
+  font-family: Arial;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 220px 210px 210px 0px;
+  gap: 50px;
+  margin-bottom: 75px;
+}
+
+.green { color: #4caf50; }
+.red { color: #f44336; }
+
+img.icon {
+  width: 24px;
+  height: 24px;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1.5;
+}
+
+.right {
+  margin-left: auto;
+  text-align: right;
+  min-width: 50px;
+}
+
+.center {
+  text-align: center;
+  min-width: 50px;
+  line-height: 1.5;
+}
+
+.icon-spacer {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.diff-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-wrapper {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+.icon-wrapper img {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 0;
+  left: 0;
+  display: block;
+}
+
+/* capa base */
+.icon-base {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  z-index: 1;
+}
+
+/* overlay PLUS (fondo) */
+.icon-plus {
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  z-index: 0;
+}
+
+/* overlay AOE (encima) */
+.icon-aoe {
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  z-index: 2;
+}
+
+.btn {
+  width: 40px;
+  height: 40px; /* importante */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  border-radius: 6px;
+
+  background: url("https://s-ak.kobojo.com/mutants/assets/mobile/hud/mutopedia/btn_black.png");
+  background-size: cover;
+
+  transition: 0.15s;
+}
+
+/* estrella */
+.btn-icon {
+  width: 22px; /* 🔥 aquí controlas SOLO la estrella */
+  height: 22px;
+}
+
+/* activo */
+.btn.active {
+  background: url("https://s-ak.kobojo.com/mutants/assets/mobile/hud/mutopedia/btn_white.png");
+  background-size: cover;
+}
+
+/* hover */
+.btn:hover {
+  transform: scale(1.1);
+}
+
+.btn-container {
+  display: flex;
+  gap: 8px; /* espacio entre estrellas */
+  justify-content: center; /* opcional */
+  margin-top: 5px;
+}
+
+.row > div:first-child {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
