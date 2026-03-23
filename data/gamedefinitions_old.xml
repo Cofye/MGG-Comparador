@@ -12860,7 +12860,7 @@
       <Tag key="recipes" value="AD_10x[A-F][A-F]_*+AD_10x[A-F]_*" />
       <Tag key="abilities" value="1:ability_shield;2:ability_shield_plus" />
       <Tag key="abilityPct1" value="15" />
-      <Tag key="abilityPct2" value="20" />
+      <Tag key="abilityPct2" value="30" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
