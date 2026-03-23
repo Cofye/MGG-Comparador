@@ -121,7 +121,7 @@ function createStats(data, id, oldData = null) {
   );
 
   addAttack(div, "Ataque 1", data.atk1, data.unlock["1"], mod,
-    oldData ? calcRealDamage(oldData.atk1.value) * mod : null
+    oldData ? oldData.atk1.value * mod : null
   );
 
   addAttack(div, "Ataque 1+", data.atk1p, data.unlock["1p"], mod,
@@ -129,7 +129,7 @@ function createStats(data, id, oldData = null) {
   );
 
   addAttack(div, "Ataque 2", data.atk2, data.unlock["2"], mod,
-    oldData ? calcRealDamage(oldData.atk2.value) * mod : null
+    oldData ? oldData.atk2.value * mod : null
   );
 
   addAttack(div, "Ataque 2+", data.atk2p, data.unlock["2p"], mod,
@@ -233,7 +233,11 @@ function addAttack(parent, label, atk, gen, mod, oldAtk = null, isPlus = false) 
 
   const icon = createAttackIcon(gen, atk);
 
-  const value = calcRealDamage(atk.value) * mod;
+  const baseValue = isPlus
+  ? calcRealDamage(atk.value)
+  : atk.value;
+
+const value = baseValue * mod;
 
   left.append(icon, document.createTextNode(label + (atk.aoe ? " Triple" : "")));
   right.textContent = Math.floor(value);
@@ -463,9 +467,9 @@ function getFinalStats(data, mode) {
     life: Math.floor(data.life * mod),
     speed: Math.round(data.speed * 100) / 100,
 
-    atk1: Math.floor(calcRealDamage(data.atk1.value) * mod),
+    atk1: Math.floor(data.atk1.value * mod),
     atk1p: Math.floor(calcRealDamage(data.atk1p.value) * mod),
-    atk2: Math.floor(calcRealDamage(data.atk2.value) * mod),
+    atk2: Math.floor(data.atk2.value * mod),
     atk2p: Math.floor(calcRealDamage(data.atk2p.value) * mod),
 
     ability1: data.ability1,
