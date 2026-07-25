@@ -537,7 +537,7 @@
           <Cost amount="120" type="entity" id="Material_Event_Token" />
         </InteractiveAction>
         <InteractiveAction x="146" y="137" target="WORKING_09" id="CONTRACT_09">
-          <Cost amount="180" type="entity" id="Material_Event_Token" />
+          <Cost amount="240" type="entity" id="Material_Event_Token" />
           <Filter>Building_Challenge_Deactivable</Filter>
         </InteractiveAction>
       </State>
@@ -565,7 +565,7 @@
       </State>
       <State x="718" y="1044" id="READY_04" caption="$Ready" spriteId="building_event_ready">
         <InteractiveAction x="438" y="743" target="InitialState" id="RECOLT" caption="collectsqd">
-          <Reward id="Specimen_FA_10" />
+          <Reward id="Specimen_CC_10" />
         </InteractiveAction>
       </State>
       <State x="9" y="1147" id="READY_05" caption="$Ready" spriteId="building_event_ready">
@@ -586,7 +586,7 @@
       </State>
       <State x="-529" y="452" id="READY_07" caption="$Ready" spriteId="building_event_ready">
         <InteractiveAction x="-184" y="448" target="InitialState" id="RECOLT" caption="collectsqd">
-          <Reward id="Specimen_CE_10" />
+          <Reward id="Specimen_ED_04" />
         </InteractiveAction>
       </State>
       <State x="-251" y="220" id="WORKING_08" spriteId="building_event_running">
@@ -602,7 +602,7 @@
       </State>
       <State x="361" y="-7" id="READY_09" caption="$Ready" spriteId="building_event_ready">
         <InteractiveAction x="261" y="218" target="InitialState" id="RECOLT" caption="collectsqd">
-          <Reward id="Specimen_DB_12" />
+          <Reward id="Specimen_DE_14" />
         </InteractiveAction>
       </State>
       <State x="573" y="1156" id="WORKING_03" spriteId="building_event_running">
@@ -961,51 +961,51 @@
         </InteractiveAction>
         <InteractiveAction x="-158" y="374" target="WORKING_04" id="CONTRACT_04">
           <Cost amount="50" type="entity" id="Material_Jackpot_Token" />
-          <Filter>Building_Jackpot_2026_02</Filter>
+          <Filter>Building_Jackpot_2026_06</Filter>
         </InteractiveAction>
         <InteractiveAction x="-154" y="621" target="WORKING_05" id="CONTRACT_05">
           <Cost amount="150" type="entity" id="Material_Jackpot_Token" />
-          <Filter>Building_Jackpot_2026_02</Filter>
+          <Filter>Building_Jackpot_2026_06</Filter>
         </InteractiveAction>
         <InteractiveAction x="-175" y="931" target="WORKING_06" id="CONTRACT_06">
-          <Cost amount="250" type="entity" id="Material_Jackpot_Token" />
-          <Filter>Building_Jackpot_2026_02</Filter>
+          <Cost amount="200" type="entity" id="Material_Jackpot_Token" />
+          <Filter>Building_Jackpot_2026_06</Filter>
         </InteractiveAction>
         <InteractiveAction x="1453" y="309" target="WORKING_07" id="CONTRACT_07">
           <Cost amount="50" type="entity" id="Material_Jackpot_Token" />
-          <Filter>Building_Jackpot_2026_03</Filter>
+          <Filter>Building_Jackpot_2026_07</Filter>
         </InteractiveAction>
         <InteractiveAction x="3556" y="327" target="WORKING_08" id="CONTRACT_08">
           <Cost amount="150" type="entity" id="Material_Jackpot_Token" />
-          <Filter>Building_Jackpot_2026_03</Filter>
+          <Filter>Building_Jackpot_2026_07</Filter>
         </InteractiveAction>
         <InteractiveAction x="3236" y="325" target="WORKING_09" id="CONTRACT_09">
-          <Cost amount="200" type="entity" id="Material_Jackpot_Token" />
-          <Filter>Building_Jackpot_2026_03</Filter>
+          <Cost amount="250" type="entity" id="Material_Jackpot_Token" />
+          <Filter>Building_Jackpot_2026_07</Filter>
         </InteractiveAction>
         <InteractiveAction x="1829" y="313" target="WORKING_10" id="CONTRACT_10">
-          <Cost amount="100" type="entity" id="Material_Valentines26_Token" />
-          <Filter>Building_Jackpot_Valentines26</Filter>
+          <Cost amount="60" type="entity" id="Material_Easter26_Token" />
+          <Filter>Building_Jackpot_Easter26</Filter>
         </InteractiveAction>
         <InteractiveAction x="2218" y="308" target="WORKING_11" id="CONTRACT_11">
-          <Cost amount="250" type="entity" id="Material_Valentines26_Token" />
-          <Filter>Building_Jackpot_Valentines26</Filter>
+          <Cost amount="120" type="entity" id="Material_Easter26_Token" />
+          <Filter>Building_Jackpot_Easter26</Filter>
         </InteractiveAction>
         <InteractiveAction x="2553" y="299" target="WORKING_12" id="CONTRACT_12">
-          <Cost amount="900" type="entity" id="Material_Valentines26_Token" />
-          <Filter>Building_Jackpot_Valentines26</Filter>
+          <Cost amount="900" type="entity" id="Material_Easter26_Token" />
+          <Filter>Building_Jackpot_Easter26</Filter>
         </InteractiveAction>
         <InteractiveAction x="2904" y="323" target="WORKING_13" id="CONTRACT_13">
-          <Cost amount="1000" type="entity" id="Material_Valentines26_Token" />
-          <Filter>Building_Jackpot_Valentines26</Filter>
+          <Cost amount="1000" type="entity" id="Material_Easter26_Token" />
+          <Filter>Building_Jackpot_Easter26</Filter>
         </InteractiveAction>
         <InteractiveAction x="-405" y="1296" target="WORKING_14" id="CONTRACT_14">
-          <Cost amount="2100" type="entity" id="Material_Valentines26_Token" />
-          <Filter>Building_Jackpot_Valentines26</Filter>
+          <Cost amount="1800" type="entity" id="Material_Easter26_Token" />
+          <Filter>Building_Jackpot_Easter26</Filter>
         </InteractiveAction>
         <InteractiveAction x="-430" y="1545" target="WORKING_15" id="CONTRACT_15">
-          <Cost amount="2400" type="entity" id="Material_Valentines26_Token" />
-          <Filter>Building_Jackpot_Valentines26</Filter>
+          <Cost amount="2000" type="entity" id="Material_Easter26_Token" />
+          <Filter>Building_Jackpot_Easter26</Filter>
         </InteractiveAction>
         <InteractiveAction x="-476" y="1856" target="WORKING_16" id="CONTRACT_16">
           <Cost amount="1250" type="entity" id="Material_Xmas25_Token" />
@@ -1077,7 +1077,7 @@
       </State>
       <State x="-554" y="513" id="READY_04" caption="$Ready" spriteId="building_jackpot_sink_ready">
         <InteractiveAction x="-397" y="509" target="InitialState" id="RECOLT" caption="collectsqd">
-          <Reward id="Specimen_AF_09" />
+          <Reward id="Specimen_BD_09" />
         </InteractiveAction>
       </State>
       <State x="-384" y="660" id="WORKING_05" spriteId="building_jackpot_sink_running">
@@ -1085,7 +1085,7 @@
       </State>
       <State x="-544" y="809" id="READY_05" caption="$Ready" spriteId="building_jackpot_sink_ready">
         <InteractiveAction x="-401" y="813" target="InitialState" id="RECOLT" caption="collectsqd">
-          <Reward id="Specimen_BE_10" />
+          <Reward id="Specimen_EC_10" />
         </InteractiveAction>
       </State>
       <State x="-391" y="957" id="WORKING_06" spriteId="building_jackpot_sink_running">
@@ -1093,7 +1093,7 @@
       </State>
       <State x="-551" y="1110" id="READY_06" caption="$Ready" spriteId="building_jackpot_sink_ready">
         <InteractiveAction x="-400" y="1094" target="InitialState" id="RECOLT" caption="collectsqd">
-          <Reward id="Specimen_D_12" />
+          <Reward id="Specimen_FE_11" />
         </InteractiveAction>
       </State>
       <State x="1452" y="174" id="WORKING_07" spriteId="building_jackpot_sink_running">
@@ -1101,7 +1101,7 @@
       </State>
       <State x="1633" y="179" id="READY_07" caption="$Ready" spriteId="building_jackpot_sink_ready">
         <InteractiveAction x="1629" y="308" target="InitialState" id="RECOLT">
-          <Reward id="Specimen_BC_09"/>
+          <Reward id="Specimen_FD_09"/>
         </InteractiveAction>
       </State>
       <State x="3580" y="230" id="WORKING_08" spriteId="building_jackpot_sink_running">
@@ -1109,7 +1109,7 @@
       </State>
       <State x="3717" y="230" id="READY_08" caption="$Ready" spriteId="building_jackpot_sink_ready">
         <InteractiveAction x="3594" y="376" target="InitialState" id="RECOLT">
-          <Reward id="Specimen_EF_10"/>
+          <Reward id="Specimen_BA_10"/>
         </InteractiveAction>
       </State>
       <State x="3299" y="228" id="WORKING_09" spriteId="building_jackpot_sink_running">
@@ -1117,7 +1117,7 @@
       </State>
       <State x="3417" y="235" id="READY_09" caption="$Ready" spriteId="building_jackpot_sink_ready">
         <InteractiveAction x="3284" y="374" target="InitialState" id="RECOLT">
-          <Reward id="Specimen_DD_11"/>
+          <Reward id="Specimen_CD_11"/>
         </InteractiveAction>
       </State>
       <State x="1837" y="190" id="WORKING_10" spriteId="building_jackpot_sink_running">
@@ -1141,9 +1141,9 @@
       </State>
       <State x="2717" y="287" id="READY_12" caption="$Ready" spriteId="building_jackpot_sink_ready">
         <InteractiveAction x="2556" y="357" target="InitialState" id="RECOLT" caption="collectsqd">
-          <Reward id="Specimen_ED_10" >
+          <Reward id="Specimen_FD_05" >
             <Tag key="stars" value="3" />
-            <Tag key="skin" value="valentines" />
+            <Tag key="skin" value="easter" />
           </Reward>
         </InteractiveAction>
       </State>
@@ -1152,9 +1152,9 @@
       </State>
       <State x="3083" y="220" id="READY_13" caption="$Ready" spriteId="building_jackpot_sink_ready">
         <InteractiveAction x="2899" y="379" target="InitialState" id="RECOLT" caption="collectsqd">
-          <Reward id="Specimen_AE_09">
+          <Reward id="Specimen_EB_03">
             <Tag key="stars" value="3" />
-            <Tag key="skin" value="valentines" />
+            <Tag key="skin" value="easter" />
           </Reward>
         </InteractiveAction>
       </State>
@@ -1163,7 +1163,7 @@
       </State>
       <State x="-724" y="1471" id="READY_14" caption="$Ready" spriteId="building_jackpot_sink_ready">
         <InteractiveAction x="-563" y="1480" target="InitialState" id="RECOLT" caption="collectsqd">
-          <Reward id="Specimen_FD_14"/>
+          <Reward id="Specimen_DA_14"/>
         </InteractiveAction>
       </State>
       <State x="-602" y="1623" id="WORKING_15" spriteId="building_jackpot_sink_running">
@@ -1171,7 +1171,7 @@
       </State>
       <State x="-724" y="1763" id="READY_15" caption="$Ready" spriteId="building_jackpot_sink_ready">
         <InteractiveAction x="-558" y="1776" target="InitialState" id="RECOLT" caption="collectsqd">
-          <Reward id="Specimen_AB_15" />
+          <Reward id="Specimen_BE_15" />
         </InteractiveAction>
       </State>
       <State x="-609" y="1949" id="WORKING_16" spriteId="building_jackpot_sink_running">
@@ -5215,16 +5215,16 @@
       <Tag key="lifePoint" value="1846" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="569" />
-      <Tag key="atk1p" value="854" />
-      <Tag key="atk2" value="569" />
+      <Tag key="atk1" value="869" />
+      <Tag key="atk1p" value="1254" />
+      <Tag key="atk2" value="869" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:a;2:5:b;2p:15:b;1p:10:a" />
       <Tag key="changePrice00" value="540" />
       <Tag key="changePrice01" value="910" />
       <Tag key="changePrice02" value="1580" />
       <Tag key="changePrice03" value="2620" />
-      <Tag key="atk2p" value="854" />
+      <Tag key="atk2p" value="1254" />
       <Tag key="type" value="LEGEND" />
       <Tag key="recipes" value="AB_04x[A-F][A-F]_*+AB_04x[A-F]_*" />
       <Tag key="abilities" value="1:ability_regen;2:ability_regen_plus" />
@@ -5482,19 +5482,19 @@
       <Tag key="spX100" value="290" />
       <Tag key="odds" value="120" />
       <Tag key="dna" value="BE" />
-      <Tag key="lifePoint" value="2195" />
+      <Tag key="lifePoint" value="2495" />
       <Tag key="incubMin" value="360" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="882" />
-      <Tag key="atk1p" value="1323" />
-      <Tag key="atk2" value="882" />
+      <Tag key="atk1" value="982" />
+      <Tag key="atk1p" value="1453" />
+      <Tag key="atk2" value="982" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:b;2:5:e;2p:15:e;1p:10:b" />
       <Tag key="changePrice00" value="216" />
       <Tag key="changePrice01" value="384" />
       <Tag key="changePrice02" value="732" />
       <Tag key="changePrice03" value="1248" />
-      <Tag key="atk2p" value="1323" />
+      <Tag key="atk2p" value="1453" />
       <Tag key="type" value="RECIPE" />
       <Tag key="recipes" value="EB_03xBC_02+CB_01xCE_01" />
       <Tag key="abilities" value="1:ability_shield;2:ability_shield_plus" />
@@ -5693,24 +5693,24 @@
       <Tag key="spX100" value="250" />
       <Tag key="odds" value="20" />
       <Tag key="dna" value="CF" />
-      <Tag key="lifePoint" value="1846" />
+      <Tag key="lifePoint" value="1976" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="600" />
-      <Tag key="atk1p" value="900" />
-      <Tag key="atk2" value="600" />
+      <Tag key="atk1" value="948" />
+      <Tag key="atk1p" value="1468" />
+      <Tag key="atk2" value="948" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:c;2:5:f;2p:15:f;1p:10:c" />
       <Tag key="changePrice00" value="540" />
       <Tag key="changePrice01" value="910" />
       <Tag key="changePrice02" value="1580" />
       <Tag key="changePrice03" value="2620" />
-      <Tag key="atk2p" value="900" />
+      <Tag key="atk2p" value="1468" />
       <Tag key="type" value="LEGEND" />
       <Tag key="recipes" value="CF_04x[A-F][A-F]_*+CF_04x[A-F]_*" />
       <Tag key="abilities" value="1:ability_retaliate;2:ability_retaliate_plus" />
       <Tag key="abilityPct1" value="-15" />
-      <Tag key="abilityPct2" value="-25" />
+      <Tag key="abilityPct2" value="-20" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -5787,7 +5787,7 @@
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
       <Tag key="atk1" value="700" />
-      <Tag key="atk1p" value="1050" />
+      <Tag key="atk1p" value="1250" />
       <Tag key="atk2" value="700" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:d;2:5:c;2p:15:c;1p:10:d" />
@@ -5795,12 +5795,12 @@
       <Tag key="changePrice01" value="910" />
       <Tag key="changePrice02" value="1580" />
       <Tag key="changePrice03" value="2620" />
-      <Tag key="atk2p" value="1050" />
+      <Tag key="atk2p" value="1250" />
       <Tag key="type" value="LEGEND" />
       <Tag key="recipes" value="DC_04x[A-F][A-F]_*+DC_04x[A-F]_*" />
       <Tag key="abilities" value="1:ability_slash;2:ability_slash_plus" />
       <Tag key="abilityPct1" value="-20" />
-      <Tag key="abilityPct2" value="-40" />
+      <Tag key="abilityPct2" value="-37" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -5843,24 +5843,24 @@
       <Tag key="spX100" value="280" />
       <Tag key="odds" value="20" />
       <Tag key="dna" value="DE" />
-      <Tag key="lifePoint" value="1913" />
+      <Tag key="lifePoint" value="1613" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="622" />
-      <Tag key="atk1p" value="934" />
-      <Tag key="atk2" value="622" />
+      <Tag key="atk1" value="822" />
+      <Tag key="atk1p" value="1534" />
+      <Tag key="atk2" value="822" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:d;2:5:e;2p:15:e;1p:10:d" />
       <Tag key="changePrice00" value="540" />
       <Tag key="changePrice01" value="910" />
       <Tag key="changePrice02" value="1580" />
       <Tag key="changePrice03" value="2620" />
-      <Tag key="atk2p" value="934" />
+      <Tag key="atk2p" value="1534" />
       <Tag key="type" value="LEGEND" />
       <Tag key="recipes" value="DE_04x[A-F][A-F]_*+DE_04x[A-F]_*" />
       <Tag key="abilities" value="1:ability_slash;2:ability_slash_plus" />
       <Tag key="abilityPct1" value="-20" />
-      <Tag key="abilityPct2" value="-40" />
+      <Tag key="abilityPct2" value="-35" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -5873,7 +5873,7 @@
       <Tag key="spX100" value="270" />
       <Tag key="odds" value="20" />
       <Tag key="dna" value="DF" />
-      <Tag key="lifePoint" value="1887" />
+      <Tag key="lifePoint" value="2287" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
       <Tag key="atk1" value="595" />
@@ -5890,7 +5890,7 @@
       <Tag key="type" value="LEGEND" />
       <Tag key="abilities" value="1:ability_slash;2:ability_slash_plus" />
       <Tag key="abilityPct1" value="-20" />
-      <Tag key="abilityPct2" value="-40" />
+      <Tag key="abilityPct2" value="-90" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -6115,21 +6115,21 @@
       <Tag key="lifePoint" value="1763" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="556" />
-      <Tag key="atk1p" value="834" />
-      <Tag key="atk2" value="556" />
+      <Tag key="atk1" value="756" />
+      <Tag key="atk1p" value="1234" />
+      <Tag key="atk2" value="756" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:f;2:5:b;2p:15:b;1p:10:f" />
       <Tag key="changePrice00" value="540" />
       <Tag key="changePrice01" value="910" />
       <Tag key="changePrice02" value="1580" />
       <Tag key="changePrice03" value="2620" />
-      <Tag key="atk2p" value="834" />
+      <Tag key="atk2p" value="1234" />
       <Tag key="type" value="LEGEND" />
       <Tag key="recipes" value="FB_04x[A-F][A-F]_*+FB_04x[A-F]_*" />
       <Tag key="abilities" value="1:ability_weaken;2:ability_weaken_plus" />
       <Tag key="abilityPct1" value="-15" />
-      <Tag key="abilityPct2" value="-25" />
+      <Tag key="abilityPct2" value="-22" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -6596,23 +6596,23 @@
       <Tag key="spX100" value="300" />
       <Tag key="odds" value="0" />
       <Tag key="dna" value="AF" />
-      <Tag key="lifePoint" value="3424" />
+      <Tag key="lifePoint" value="3733" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="1284" />
-      <Tag key="atk1p" value="1927" />
-      <Tag key="atk2" value="1284" />
+      <Tag key="atk1" value="1518" />
+      <Tag key="atk1p" value="2227" />
+      <Tag key="atk2" value="1518" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:a;2:5:f;2p:15:f;1p:10:a" />
       <Tag key="changePrice00" value="100000" />
       <Tag key="changePrice01" value="100000" />
       <Tag key="changePrice02" value="100000" />
       <Tag key="changePrice03" value="100000" />
-      <Tag key="atk2p" value="1927" />
+      <Tag key="atk2p" value="2227" />
       <Tag key="type" value="SEASONAL" />
       <Tag key="abilities" value="1:ability_retaliate;2:ability_retaliate_plus" />
       <Tag key="abilityPct1" value="-15" />
-      <Tag key="abilityPct2" value="-25" />
+      <Tag key="abilityPct2" value="-27" />
       <Tag key="orbSlots" value="n;n;s" />
       <Tag key="hideSkins" value="platinum" />
       <CustomScript name="onPlaceOver">
@@ -6809,21 +6809,21 @@
       <Tag key="lifePoint" value="1297" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="295" />
-      <Tag key="atk1p" value="444" />
-      <Tag key="atk2" value="295" />
+      <Tag key="atk1" value="595" />
+      <Tag key="atk1p" value="844" />
+      <Tag key="atk2" value="595" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:c;2:5:a;2p:15:a;1p:10:c" />
       <Tag key="changePrice00" value="540" />
       <Tag key="changePrice01" value="910" />
       <Tag key="changePrice02" value="1580" />
       <Tag key="changePrice03" value="2620" />
-      <Tag key="atk2p" value="444" />
+      <Tag key="atk2p" value="844" />
       <Tag key="type" value="LEGEND" />
       <Tag key="recipes" value="CA_05x[A-F][A-F]_*+CA_05x[A-F]_*" />
       <Tag key="abilities" value="1:ability_retaliate;2:ability_retaliate_plus" />
-      <Tag key="abilityPct1" value="-15" />
-      <Tag key="abilityPct2" value="-25" />
+      <Tag key="abilityPct1" value="-25" />
+      <Tag key="abilityPct2" value="-40" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -7103,7 +7103,7 @@
       <Tag key="spX100" value="300" />
       <Tag key="odds" value="20" />
       <Tag key="dna" value="DE" />
-      <Tag key="lifePoint" value="1915" />
+      <Tag key="lifePoint" value="2230" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
       <Tag key="atk1" value="696" />
@@ -7120,7 +7120,7 @@
       <Tag key="recipes" value="DE_05x[A-F][A-F]_*+DE_05x[A-F]_*" />
       <Tag key="abilities" value="1:ability_slash;2:ability_slash_plus" />
       <Tag key="abilityPct1" value="-20" />
-      <Tag key="abilityPct2" value="-40" />
+      <Tag key="abilityPct2" value="-50" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -7196,16 +7196,16 @@
       <Tag key="lifePoint" value="1860" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="671" />
-      <Tag key="atk1p" value="961" />
-      <Tag key="atk2" value="671" />
+      <Tag key="atk1" value="871" />
+      <Tag key="atk1p" value="1246" />
+      <Tag key="atk2" value="871" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:e;2:5:b;2p:15:b;1p:10:e" />
       <Tag key="changePrice00" value="540" />
       <Tag key="changePrice01" value="910" />
       <Tag key="changePrice02" value="1580" />
       <Tag key="changePrice03" value="2620" />
-      <Tag key="atk2p" value="961" />
+      <Tag key="atk2p" value="1246" />
       <Tag key="type" value="LEGEND" />
       <Tag key="recipes" value="EB_05x[A-F][A-F]_*+EB_05x[A-F]_*" />
       <Tag key="abilities" value="1:ability_strengthen;2:ability_strengthen_plus" />
@@ -7223,15 +7223,15 @@
       <Tag key="spX100" value="230" />
       <Tag key="odds" value="20" />
       <Tag key="dna" value="EC" />
-      <Tag key="lifePoint" value="1602" />
+      <Tag key="lifePoint" value="1802" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="491" />
-      <Tag key="atk1p" value="737" />
-      <Tag key="atk2" value="491" />
+      <Tag key="atk1" value="691" />
+      <Tag key="atk1p" value="1037" />
+      <Tag key="atk2" value="691" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:e;2:5:c;2p:15:c;1p:10:e" />
-      <Tag key="atk2p" value="737" />
+      <Tag key="atk2p" value="1037" />
       <Tag key="changePrice00" value="540" />
       <Tag key="changePrice01" value="910" />
       <Tag key="changePrice02" value="1580" />
@@ -7240,7 +7240,7 @@
       <Tag key="type" value="LEGEND" />
       <Tag key="abilities" value="1:ability_strengthen;2:ability_strengthen_plus" />
       <Tag key="abilityPct1" value="20" />
-      <Tag key="abilityPct2" value="32" />
+      <Tag key="abilityPct2" value="27" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -7253,19 +7253,19 @@
       <Tag key="spX100" value="280" />
       <Tag key="odds" value="20" />
       <Tag key="dna" value="ED" />
-      <Tag key="lifePoint" value="1753" />
+      <Tag key="lifePoint" value="1813" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="622" />
-      <Tag key="atk1p" value="934" />
-      <Tag key="atk2" value="622" />
+      <Tag key="atk1" value="813" />
+      <Tag key="atk1p" value="1379" />
+      <Tag key="atk2" value="813" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:e;2:5:d;2p:15:d;1p:10:e" />
       <Tag key="changePrice00" value="540" />
       <Tag key="changePrice01" value="910" />
       <Tag key="changePrice02" value="1580" />
       <Tag key="changePrice03" value="2620" />
-      <Tag key="atk2p" value="934" />
+      <Tag key="atk2p" value="1379" />
       <Tag key="recipes" value="ED_05x[A-F][A-F]_*+ED_05x[A-F]_*" />
       <Tag key="type" value="LEGEND" />
       <Tag key="abilities" value="1:ability_strengthen;2:ability_strengthen_plus" />
@@ -7313,24 +7313,24 @@
       <Tag key="spX100" value="260" />
       <Tag key="odds" value="20" />
       <Tag key="dna" value="EF" />
-      <Tag key="lifePoint" value="1905" />
+      <Tag key="lifePoint" value="1405" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="587" />
-      <Tag key="atk1p" value="881" />
-      <Tag key="atk2" value="587" />
+      <Tag key="atk1" value="1387" />
+      <Tag key="atk1p" value="2081" />
+      <Tag key="atk2" value="1387" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:e;2:5:f;2p:15:f;1p:10:e" />
       <Tag key="changePrice00" value="540" />
       <Tag key="changePrice01" value="910" />
       <Tag key="changePrice02" value="1580" />
       <Tag key="changePrice03" value="2620" />
-      <Tag key="atk2p" value="881" />
+      <Tag key="atk2p" value="2081" />
       <Tag key="type" value="LEGEND" />
       <Tag key="recipes" value="EF_05x[A-F][A-F]_*+EF_05x[A-F]_*" />
       <Tag key="abilities" value="1:ability_regen;2:ability_regen_plus" />
       <Tag key="abilityPct1" value="25" />
-      <Tag key="abilityPct2" value="38" />
+      <Tag key="abilityPct2" value="30" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -7346,12 +7346,12 @@
       <Tag key="lifePoint" value="1464" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="390" />
-      <Tag key="atk1p" value="586" />
-      <Tag key="atk2" value="390" />
+      <Tag key="atk1" value="538" />
+      <Tag key="atk1p" value="884" />
+      <Tag key="atk2" value="538" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:f;2:5:a;2p:15:a;1p:10:f" />
-      <Tag key="atk2p" value="586" />
+      <Tag key="atk2p" value="884" />
       <Tag key="type" value="LEGEND" />
       <Tag key="changePrice00" value="540" />
       <Tag key="changePrice01" value="910" />
@@ -7360,7 +7360,7 @@
       <Tag key="recipes" value="FA_05x[A-F][A-F]_*+FA_05x[A-F]_*" />
       <Tag key="abilities" value="1:ability_weaken;2:ability_weaken_plus" />
       <Tag key="abilityPct1" value="-15" />
-      <Tag key="abilityPct2" value="-25" />
+      <Tag key="abilityPct2" value="-40" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -7708,10 +7708,10 @@
       <Tag key="lifePoint" value="2258" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="845" />
-      <Tag key="atk1p" value="1269" />
-      <Tag key="atk2" value="435:AOE" />
-      <Tag key="atk2p" value="729:AOE" />
+      <Tag key="atk1" value="945" />
+      <Tag key="atk1p" value="1569" />
+      <Tag key="atk2" value="635:AOE" />
+      <Tag key="atk2p" value="929:AOE" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:a;2:5:a;1p:10:a;2p:15:a" />
       <Tag key="type" value="PVP" />
@@ -7722,7 +7722,7 @@
       <Tag key="changePrice03" value="2620" />
       <Tag key="abilities" value="1:ability_shield;2:ability_shield_plus" />
       <Tag key="abilityPct1" value="20" />
-      <Tag key="abilityPct2" value="30" />
+      <Tag key="abilityPct2" value="33" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -7795,7 +7795,7 @@
       <Tag key="spX100" value="280" />
       <Tag key="odds" value="20" />
       <Tag key="dna" value="AD" />
-      <Tag key="lifePoint" value="2286" />
+      <Tag key="lifePoint" value="2646" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
       <Tag key="atk1" value="796" />
@@ -7812,7 +7812,7 @@
       <Tag key="recipes" value="AD_06x[A-F][A-F]_*+AD_06x[A-F]_*" />
       <Tag key="abilities" value="1:ability_shield;2:ability_shield_plus" />
       <Tag key="abilityPct1" value="26" />
-      <Tag key="abilityPct2" value="41" />
+      <Tag key="abilityPct2" value="44" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -7885,13 +7885,13 @@
       <Tag key="spX100" value="260" />
       <Tag key="odds" value="20" />
       <Tag key="dna" value="BA" />
-      <Tag key="lifePoint" value="1980" />
+      <Tag key="lifePoint" value="2041" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="747" />
-      <Tag key="atk1p" value="1122" />
-      <Tag key="atk2" value="747" />
-      <Tag key="atk2p" value="1122" />
+      <Tag key="atk1" value="947" />
+      <Tag key="atk1p" value="1322" />
+      <Tag key="atk2" value="947" />
+      <Tag key="atk2p" value="1322" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:b;2:5:a;2p:15:a;1p:10:b" />
       <Tag key="changePrice00" value="540" />
@@ -8068,16 +8068,16 @@
       <Tag key="lifePoint" value="2321" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="630" />
-      <Tag key="atk1p" value="1176" />
-      <Tag key="atk2" value="630" />
+      <Tag key="atk1" value="830" />
+      <Tag key="atk1p" value="1376" />
+      <Tag key="atk2" value="830" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:c;2:5:a;2p:15:a;1p:10:c" />
       <Tag key="changePrice00" value="540" />
       <Tag key="changePrice01" value="910" />
       <Tag key="changePrice02" value="1580" />
       <Tag key="changePrice03" value="2620" />
-      <Tag key="atk2p" value="1176" />
+      <Tag key="atk2p" value="1376" />
       <Tag key="type" value="LEGEND" />
       <Tag key="recipes" value="CA_06x[A-F][A-F]_*+CA_06x[A-F]_*" />
       <Tag key="abilities" value="1:ability_retaliate;2:ability_retaliate_plus" />
@@ -8154,7 +8154,7 @@
       <Tag key="spX100" value="290" />
       <Tag key="odds" value="20" />
       <Tag key="dna" value="CD" />
-      <Tag key="lifePoint" value="2868" />
+      <Tag key="lifePoint" value="3268" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
       <Tag key="atk1" value="699" />
@@ -8171,7 +8171,7 @@
       <Tag key="changePrice03" value="2620" />
       <Tag key="abilities" value="1:ability_shield;2:ability_shield_plus" />
       <Tag key="abilityPct1" value="20" />
-      <Tag key="abilityPct2" value="37" />
+      <Tag key="abilityPct2" value="35" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -8248,9 +8248,9 @@
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
       <Tag key="atk1" value="758" />
-      <Tag key="atk1p" value="1137" />
+      <Tag key="atk1p" value="1237" />
       <Tag key="atk2" value="758" />
-      <Tag key="atk2p" value="1137" />
+      <Tag key="atk2p" value="1237" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:d;2:5:a;2p:15:a;1p:10:d" />
       <Tag key="type" value="LEGEND" />
@@ -8261,7 +8261,7 @@
       <Tag key="changePrice03" value="2620" />
       <Tag key="abilities" value="1:ability_strengthen;2:ability_strengthen_plus" />
       <Tag key="abilityPct1" value="20" />
-      <Tag key="abilityPct2" value="30" />
+      <Tag key="abilityPct2" value="40" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -8304,19 +8304,19 @@
       <Tag key="spX100" value="270" />
       <Tag key="odds" value="20" />
       <Tag key="dna" value="DC" />
-      <Tag key="lifePoint" value="2130" />
+      <Tag key="lifePoint" value="2330" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="633" />
-      <Tag key="atk1p" value="951" />
-      <Tag key="atk2" value="633" />
+      <Tag key="atk1" value="733" />
+      <Tag key="atk1p" value="1151" />
+      <Tag key="atk2" value="733" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:d;2:5:c;2p:15:c;1p:10:d" />
       <Tag key="changePrice00" value="540" />
       <Tag key="changePrice01" value="910" />
       <Tag key="changePrice02" value="1580" />
       <Tag key="changePrice03" value="2620" />
-      <Tag key="atk2p" value="951" />
+      <Tag key="atk2p" value="1151" />
       <Tag key="type" value="LEGEND" />
       <Tag key="recipes" value="DC_06x[A-F][A-F]_*+DC_06x[A-F]_*" />
       <Tag key="abilities" value="1:ability_regen;2:ability_regen_plus" />
@@ -8694,11 +8694,11 @@
       <Tag key="spX100" value="240" />
       <Tag key="odds" value="20" />
       <Tag key="dna" value="FD" />
-      <Tag key="lifePoint" value="1706" />
+      <Tag key="lifePoint" value="2706" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
       <Tag key="atk1" value="512" />
-      <Tag key="atk1p" value="769" />
+      <Tag key="atk1p" value="869" />
       <Tag key="atk2" value="512" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:f;2:5:d;2p:15:d;1p:10:f" />
@@ -8706,12 +8706,12 @@
       <Tag key="changePrice01" value="910" />
       <Tag key="changePrice02" value="1580" />
       <Tag key="changePrice03" value="2620" />
-      <Tag key="atk2p" value="769" />
+      <Tag key="atk2p" value="869" />
       <Tag key="type" value="LEGEND" />
       <Tag key="recipes" value="FD_06x[A-F][A-F]_*+FD_06x[A-F]_*" />
       <Tag key="abilities" value="1:ability_weaken;2:ability_weaken_plus" />
       <Tag key="abilityPct1" value="-17" />
-      <Tag key="abilityPct2" value="-26" />
+      <Tag key="abilityPct2" value="-24" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -8727,10 +8727,10 @@
       <Tag key="lifePoint" value="1685" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="440" />
-      <Tag key="atk1p" value="714" />
-      <Tag key="atk2" value="440" />
-      <Tag key="atk2p" value="714" />
+      <Tag key="atk1" value="734" />
+      <Tag key="atk1p" value="1128" />
+      <Tag key="atk2" value="734" />
+      <Tag key="atk2p" value="1128" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:f;2:5:e;2p:15:e;1p:10:f" />
       <Tag key="changePrice00" value="540" />
@@ -8740,7 +8740,7 @@
       <Tag key="type" value="LEGEND" />
       <Tag key="abilities" value="1:ability_weaken;2:ability_weaken_plus" />
       <Tag key="abilityPct1" value="-13" />
-      <Tag key="abilityPct2" value="-22" />
+      <Tag key="abilityPct2" value="-20" />
       <Tag key="orbSlots" value="n;n;s" />
       <Tag key="recipes" value="FE_06x[A-F][A-F]_*+FE_06x[A-F]_*" />
       <CustomScript name="onPlaceOver">
@@ -9093,10 +9093,10 @@
       <Tag key="lifePoint" value="1722" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="787" />
-      <Tag key="atk1p" value="1183" />
-      <Tag key="atk2" value="787" />
-      <Tag key="atk2p" value="1183" />
+      <Tag key="atk1" value="887" />
+      <Tag key="atk1p" value="1483" />
+      <Tag key="atk2" value="887" />
+      <Tag key="atk2p" value="1483" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:a;2:5:e;2p:15:e;1p:10:a" />
       <Tag key="changePrice00" value="540" />
@@ -9107,7 +9107,7 @@
       <Tag key="recipes" value="AE_07x[A-F][A-F]_*+AE_07x[A-F]_*" />
       <Tag key="abilities" value="1:ability_strengthen;2:ability_strengthen_plus" />
       <Tag key="abilityPct1" value="20" />
-      <Tag key="abilityPct2" value="30" />
+      <Tag key="abilityPct2" value="40" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -9330,13 +9330,13 @@
       <Tag key="spX100" value="310" />
       <Tag key="odds" value="20" />
       <Tag key="dna" value="CA" />
-      <Tag key="lifePoint" value="2431" />
+      <Tag key="lifePoint" value="2931" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
       <Tag key="atk1" value="732" />
-      <Tag key="atk1p" value="1100" />
+      <Tag key="atk1p" value="1140" />
       <Tag key="atk2" value="732" />
-      <Tag key="atk2p" value="1100" />
+      <Tag key="atk2p" value="1140" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:c;2:5:a;2p:15:a;1p:10:c" />
       <Tag key="changePrice00" value="540" />
@@ -9347,7 +9347,7 @@
       <Tag key="recipes" value="CA_07x[A-F][A-F]_*+CA_07x[A-F]_*" />
       <Tag key="abilities" value="1:ability_shield;2:ability_shield_plus" />
       <Tag key="abilityPct1" value="20" />
-      <Tag key="abilityPct2" value="38" />
+      <Tag key="abilityPct2" value="55" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -9658,19 +9658,19 @@
       <Tag key="spX100" value="270" />
       <Tag key="odds" value="20" />
       <Tag key="dna" value="DF" />
-      <Tag key="lifePoint" value="1872" />
+      <Tag key="lifePoint" value="1832" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="587" />
-      <Tag key="atk1p" value="1326" />
-      <Tag key="atk2" value="587" />
+      <Tag key="atk1" value="887" />
+      <Tag key="atk1p" value="1626" />
+      <Tag key="atk2" value="887" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:d;2:5:f;2p:15:f;1p:10:d" />
       <Tag key="changePrice00" value="540" />
       <Tag key="changePrice01" value="910" />
       <Tag key="changePrice02" value="1580" />
       <Tag key="changePrice03" value="2620" />
-      <Tag key="atk2p" value="1326" />
+      <Tag key="atk2p" value="1626" />
       <Tag key="recipes" value="DF_07x[A-F][A-F]_*+DF_07x[A-F]_*" />
       <Tag key="type" value="LEGEND" />
       <Tag key="abilities" value="1:ability_retaliate;2:ability_retaliate_plus" />
@@ -9751,10 +9751,10 @@
       <Tag key="lifePoint" value="1622" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="580" />
-      <Tag key="atk1p" value="870" />
-      <Tag key="atk2" value="580" />
-      <Tag key="atk2p" value="870" />
+      <Tag key="atk1" value="751" />
+      <Tag key="atk1p" value="1374" />
+      <Tag key="atk2" value="751" />
+      <Tag key="atk2p" value="1374" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:e;2:5:c;2p:15:c;1p:10:e" />
       <Tag key="changePrice00" value="540" />
@@ -10477,10 +10477,10 @@
       <Tag key="lifePoint" value="1482" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="539" />
-      <Tag key="atk1p" value="962" />
-      <Tag key="atk2" value="539" />
-      <Tag key="atk2p" value="962" />
+      <Tag key="atk1" value="862" />
+      <Tag key="atk1p" value="1482" />
+      <Tag key="atk2" value="862" />
+      <Tag key="atk2p" value="1482" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:b;2:5:c;2p:15:c;1p:10:b" />
       <Tag key="changePrice00" value="540" />
@@ -10491,7 +10491,7 @@
       <Tag key="recipes" value="BC_08x[A-F][A-F]_*+BC_08x[A-F]_*" />
       <Tag key="abilities" value="1:ability_weaken;2:ability_weaken_plus" />
       <Tag key="abilityPct1" value="-22" />
-      <Tag key="abilityPct2" value="-35" />
+      <Tag key="abilityPct2" value="-25" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -10627,10 +10627,10 @@
       <Tag key="lifePoint" value="1463" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="1020" />
-      <Tag key="atk1p" value="1530" />
-      <Tag key="atk2" value="1020" />
-      <Tag key="atk2p" value="1530" />
+      <Tag key="atk1" value="1120" />
+      <Tag key="atk1p" value="1690" />
+      <Tag key="atk2" value="1120" />
+      <Tag key="atk2p" value="1690" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:c;2:5:b;2p:15:b;1p:10:c" />
       <Tag key="type" value="LEGEND" />
@@ -10744,13 +10744,13 @@
       <Tag key="spX100" value="300" />
       <Tag key="odds" value="20" />
       <Tag key="dna" value="CF" />
-      <Tag key="lifePoint" value="2195" />
+      <Tag key="lifePoint" value="2095" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
       <Tag key="atk1" value="723" />
-      <Tag key="atk1p" value="1085" />
+      <Tag key="atk1p" value="1285" />
       <Tag key="atk2" value="723" />
-      <Tag key="atk2p" value="1085" />
+      <Tag key="atk2p" value="1285" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:c;2:5:f;2p:15:f;1p:10:c" />
       <Tag key="changePrice00" value="540" />
@@ -10761,7 +10761,7 @@
       <Tag key="recipes" value="CF_08x[A-F][A-F]_*+CF_08x[A-F]_*" />
       <Tag key="abilities" value="1:ability_regen;2:ability_regen_plus" />
       <Tag key="abilityPct1" value="27" />
-      <Tag key="abilityPct2" value="37" />
+      <Tag key="abilityPct2" value="41" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -10807,10 +10807,10 @@
       <Tag key="lifePoint" value="2032" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="615" />
-      <Tag key="atk1p" value="923" />
-      <Tag key="atk2" value="615" />
-      <Tag key="atk2p" value="923" />
+      <Tag key="atk1" value="715" />
+      <Tag key="atk1p" value="1423" />
+      <Tag key="atk2" value="715" />
+      <Tag key="atk2p" value="1423" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:d;2:5:b;2p:15:b;1p:10:d" />
       <Tag key="changePrice00" value="540" />
@@ -11222,13 +11222,13 @@
       <Tag key="spX100" value="260" />
       <Tag key="odds" value="20" />
       <Tag key="dna" value="FD" />
-      <Tag key="lifePoint" value="1857" />
+      <Tag key="lifePoint" value="1957" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="569" />
-      <Tag key="atk1p" value="852" />
-      <Tag key="atk2" value="569" />
-      <Tag key="atk2p" value="852" />
+      <Tag key="atk1" value="741" />
+      <Tag key="atk1p" value="1052" />
+      <Tag key="atk2" value="741" />
+      <Tag key="atk2p" value="1052" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:f;2:5:d;2p:15:d;1p:10:f" />
       <Tag key="changePrice00" value="540" />
@@ -11238,8 +11238,8 @@
       <Tag key="type" value="LEGEND" />
       <Tag key="recipes" value="FD_08x[A-F][A-F]_*+FD_08x[A-F]_*" />
       <Tag key="abilities" value="1:ability_slash;2:ability_slash_plus" />
-      <Tag key="abilityPct1" value="-20" />
-      <Tag key="abilityPct2" value="-40" />
+      <Tag key="abilityPct1" value="-30" />
+      <Tag key="abilityPct2" value="-50" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -11252,13 +11252,13 @@
       <Tag key="spX100" value="290" />
       <Tag key="odds" value="20" />
       <Tag key="dna" value="FE" />
-      <Tag key="lifePoint" value="1932" />
+      <Tag key="lifePoint" value="1982" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="640" />
-      <Tag key="atk1p" value="961" />
-      <Tag key="atk2" value="640" />
-      <Tag key="atk2p" value="961" />
+      <Tag key="atk1" value="971" />
+      <Tag key="atk1p" value="1561" />
+      <Tag key="atk2" value="971" />
+      <Tag key="atk2p" value="1561" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:f;2:5:e;2p:15:e;1p:10:f" />
       <Tag key="changePrice00" value="540" />
@@ -12005,10 +12005,10 @@
       <Tag key="lifePoint" value="1860" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="698" />
-      <Tag key="atk1p" value="1040" />
-      <Tag key="atk2" value="698" />
-      <Tag key="atk2p" value="1040" />
+      <Tag key="atk1" value="898" />
+      <Tag key="atk1p" value="1440" />
+      <Tag key="atk2" value="898" />
+      <Tag key="atk2p" value="1440" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:c;2:5:f;2p:15:f;1p:10:c" />
       <Tag key="changePrice00" value="540" />
@@ -12018,8 +12018,8 @@
       <Tag key="type" value="LEGEND" />
       <Tag key="recipes" value="CF_09x[A-F][A-F]_*+CF_09x[A-F]_*" />
       <Tag key="abilities" value="1:ability_retaliate;2:ability_retaliate_plus" />
-      <Tag key="abilityPct1" value="-15" />
-      <Tag key="abilityPct2" value="-25" />
+      <Tag key="abilityPct1" value="-30" />
+      <Tag key="abilityPct2" value="-50" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -12486,9 +12486,9 @@
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
       <Tag key="atk1" value="579" />
-      <Tag key="atk1p" value="870" />
+      <Tag key="atk1p" value="977" />
       <Tag key="atk2" value="579" />
-      <Tag key="atk2p" value="870" />
+      <Tag key="atk2p" value="977" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:f;2:5:d;2p:15:d;1p:10:f" />
       <Tag key="changePrice00" value="540" />
@@ -12499,7 +12499,7 @@
       <Tag key="recipes" value="FD_09x[A-F][A-F]_*+FD_09x[A-F]_*" />
       <Tag key="abilities" value="1:ability_weaken;2:ability_weaken_plus" />
       <Tag key="abilityPct1" value="-15" />
-      <Tag key="abilityPct2" value="-25" />
+      <Tag key="abilityPct2" value="-22" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -12512,13 +12512,13 @@
       <Tag key="spX100" value="290" />
       <Tag key="odds" value="20" />
       <Tag key="dna" value="FE" />
-      <Tag key="lifePoint" value="2145" />
+      <Tag key="lifePoint" value="2345" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="769" />
-      <Tag key="atk1p" value="1153" />
-      <Tag key="atk2" value="769" />
-      <Tag key="atk2p" value="1153" />
+      <Tag key="atk1" value="949" />
+      <Tag key="atk1p" value="1418" />
+      <Tag key="atk2" value="949" />
+      <Tag key="atk2p" value="1418" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:f;2:5:e;2p:15:e;1p:10:f" />
       <Tag key="changePrice00" value="540" />
@@ -12528,7 +12528,7 @@
       <Tag key="type" value="LEGEND" />
       <Tag key="abilities" value="1:ability_weaken;2:ability_weaken_plus" />
       <Tag key="abilityPct1" value="-15" />
-      <Tag key="abilityPct2" value="-25" />
+      <Tag key="abilityPct2" value="-20" />
       <Tag key="orbSlots" value="n;n;s" />
       <Tag key="recipes" value="FE_09x[A-F][A-F]_*+FE_09x[A-F]_*" />
       <CustomScript name="onPlaceOver">
@@ -12783,13 +12783,13 @@
       <Tag key="spX100" value="290" />
       <Tag key="odds" value="20" />
       <Tag key="dna" value="AB" />
-      <Tag key="lifePoint" value="2125" />
+      <Tag key="lifePoint" value="1925" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="890" />
-      <Tag key="atk1p" value="1395" />
-      <Tag key="atk2" value="890" />
-      <Tag key="atk2p" value="1395" />
+      <Tag key="atk1" value="1141" />
+      <Tag key="atk1p" value="1795" />
+      <Tag key="atk2" value="1141" />
+      <Tag key="atk2p" value="1795" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:a;2:5:b;2p:15:b;1p:10:a" />
       <Tag key="changePrice00" value="540" />
@@ -12846,10 +12846,10 @@
       <Tag key="lifePoint" value="2477" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="820" />
-      <Tag key="atk1p" value="1229" />
-      <Tag key="atk2" value="820" />
-      <Tag key="atk2p" value="1229" />
+      <Tag key="atk1" value="943" />
+      <Tag key="atk1p" value="1549" />
+      <Tag key="atk2" value="943" />
+      <Tag key="atk2p" value="1549" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:a;2:5:d;2p:15:d;1p:10:a" />
       <Tag key="changePrice00" value="540" />
@@ -12860,7 +12860,7 @@
       <Tag key="recipes" value="AD_10x[A-F][A-F]_*+AD_10x[A-F]_*" />
       <Tag key="abilities" value="1:ability_shield;2:ability_shield_plus" />
       <Tag key="abilityPct1" value="15" />
-      <Tag key="abilityPct2" value="30" />
+      <Tag key="abilityPct2" value="22" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -13711,13 +13711,13 @@
       <Tag key="spX100" value="260" />
       <Tag key="odds" value="20" />
       <Tag key="dna" value="FC" />
-      <Tag key="lifePoint" value="2114" />
+      <Tag key="lifePoint" value="2514" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="698" />
-      <Tag key="atk1p" value="1049" />
-      <Tag key="atk2" value="698" />
-      <Tag key="atk2p" value="1049" />
+      <Tag key="atk1" value="898" />
+      <Tag key="atk1p" value="1249" />
+      <Tag key="atk2" value="898" />
+      <Tag key="atk2p" value="1249" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:f;2:5:c;2p:15:c;1p:10:f" />
       <Tag key="changePrice00" value="540" />
@@ -17229,10 +17229,10 @@
     </EntityDescriptor>
     <EntityDescriptor id="Specimen_EA_13" movable="true" storable="true" category="specimen" sizeX="0.01" sizeY="0.01">
       <State id="default" spriteId="specimen_EA_13_stand" sellPrice="20000" />
-      <Tag key="spX100" value="160" />
+      <Tag key="spX100" value="170" />
       <Tag key="odds" value="20" />
       <Tag key="dna" value="EA" />
-      <Tag key="lifePoint" value="1972" />
+      <Tag key="lifePoint" value="1872" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
       <Tag key="atk1" value="761" />
@@ -17249,7 +17249,7 @@
       <Tag key="recipes" value="EA_13x[A-F][A-F]_*+EA_13x[A-F]_*" />
       <Tag key="abilities" value="1:ability_strengthen;2:ability_strengthen_plus" />
       <Tag key="abilityPct1" value="15" />
-      <Tag key="abilityPct2" value="35" />
+      <Tag key="abilityPct2" value="32" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -17917,13 +17917,13 @@
       <Tag key="spX100" value="310" />
       <Tag key="odds" value="20" />
       <Tag key="dna" value="AF" />
-      <Tag key="lifePoint" value="2500" />
+      <Tag key="lifePoint" value="2950" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
       <Tag key="atk1" value="780" />
-      <Tag key="atk1p" value="1170" />
+      <Tag key="atk1p" value="1370" />
       <Tag key="atk2" value="780" />
-      <Tag key="atk2p" value="1170" />
+      <Tag key="atk2p" value="1370" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:a;2:5:f;2p:15:f;1p:10:a" />
       <Tag key="changePrice00" value="540" />
@@ -17933,7 +17933,7 @@
       <Tag key="type" value="LEGEND" />
       <Tag key="abilities" value="1:ability_shield;2:ability_shield_plus" />
       <Tag key="abilityPct1" value="20" />
-      <Tag key="abilityPct2" value="30" />
+      <Tag key="abilityPct2" value="40" />
       <Tag key="orbSlots" value="n;n;s" />
       <Tag key="recipes" value="AF_99x[A-F][A-F]_*+AF_99x[A-F]_*" />
       <CustomScript name="onPlaceOver">
@@ -18798,7 +18798,7 @@
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
       <Tag key="atk1" value="718" />
-      <Tag key="atk1p" value="1077" />
+      <Tag key="atk1p" value="1447" />
       <Tag key="atk2" value="718" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:f;2:5:e;2p:15:e;1p:10:f" />
@@ -18806,12 +18806,12 @@
       <Tag key="changePrice01" value="910" />
       <Tag key="changePrice02" value="1580" />
       <Tag key="changePrice03" value="2620" />
-      <Tag key="atk2p" value="1077" />
+      <Tag key="atk2p" value="1447" />
       <Tag key="recipes" value="FE_99x[A-F][A-F]_*+FE_99x[A-F]_*" />
       <Tag key="type" value="LEGEND" />
       <Tag key="abilities" value="1:ability_retaliate;2:ability_retaliate_plus" />
       <Tag key="abilityPct1" value="-15" />
-      <Tag key="abilityPct2" value="-25" />
+      <Tag key="abilityPct2" value="-28" />
       <Tag key="orbSlots" value="n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -22183,29 +22183,28 @@
     </EntityDescriptor>
     <EntityDescriptor id="Specimen_AA_14" movable="true" storable="true" category="specimen" sizeX="0.01" sizeY="0.01">
       <State id="default" spriteId="specimen_AA_14_stand" sellPrice="20000" />
-      <Tag key="spX100" value="200" />
-      <Tag key="odds" value="0" />
+      <Tag key="spX100" value="185" />
+      <Tag key="odds" value="20" />
       <Tag key="dna" value="AA" />
-      <Tag key="lifePoint" value="1130" />
+      <Tag key="lifePoint" value="2026" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="312" />
-      <Tag key="atk1p" value="468" />
-      <Tag key="atk2" value="156:AOE" />
-      <Tag key="atk2p" value="234:AOE" />
+      <Tag key="atk1" value="1033" />
+      <Tag key="atk1p" value="1432" />
+      <Tag key="atk2" value="624:AOE" />
+      <Tag key="atk2p" value="815:AOE" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:a;2:5:a;1p:10:a;2p:15:a" />
       <Tag key="type" value="LEGEND" />
       <Tag key="recipes" value="AA_14x[A-F][A-F]_*+AA_14x[A-F]_*" />
-      <Tag key="changePrice00" value="99999999" />
-      <Tag key="changePrice01" value="99999999" />
-      <Tag key="changePrice02" value="99999999" />
-      <Tag key="changePrice03" value="99999999" />
-      <Tag key="abilities" value="1:ability_shield;2:ability_shield_plus" />
-      <Tag key="abilityPct1" value="20" />
-      <Tag key="abilityPct2" value="30" />
+      <Tag key="changePrice00" value="540" />
+      <Tag key="changePrice01" value="910" />
+      <Tag key="changePrice02" value="1580" />
+      <Tag key="changePrice03" value="2620" />
+      <Tag key="abilities" value="1:ability_weaken;2:ability_weaken_plus" />
+      <Tag key="abilityPct1" value="-15" />
+      <Tag key="abilityPct2" value="-25" />
       <Tag key="orbSlots" value="n;n;s" />
-      <Tag key="PNJ" value="true" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
           <Param>Specimen_A_A</Param>
@@ -22339,9 +22338,9 @@
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
       <Tag key="atk1" value="687" />
-      <Tag key="atk1p" value="975" />
+      <Tag key="atk1p" value="875" />
       <Tag key="atk2" value="687" />
-      <Tag key="atk2p" value="975" />
+      <Tag key="atk2p" value="875" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:a;2:5:f;2p:15:f;1p:10:a" />
       <Tag key="changePrice00" value="540" />
@@ -22351,7 +22350,7 @@
       <Tag key="type" value="LEGEND" />
       <Tag key="abilities" value="1:ability_retaliate;2:ability_retaliate_plus" />
       <Tag key="abilityPct1" value="-10" />
-      <Tag key="abilityPct2" value="-50" />
+      <Tag key="abilityPct2" value="-65" />
       <Tag key="orbSlots" value="n;n;s" />
       <Tag key="recipes" value="AF_14x[A-F][A-F]_*+AF_14x[A-F]_*" />
       <CustomScript name="onPlaceOver">
@@ -22542,10 +22541,10 @@
     </EntityDescriptor>
     <EntityDescriptor id="Specimen_CA_14" movable="true" storable="true" category="specimen" sizeX="0.01" sizeY="0.01">
       <State id="default" spriteId="specimen_CA_14_stand" sellPrice="20000" />
-      <Tag key="spX100" value="210" />
+      <Tag key="spX100" value="220" />
       <Tag key="odds" value="0" />
       <Tag key="dna" value="CA" />
-      <Tag key="lifePoint" value="2466" />
+      <Tag key="lifePoint" value="2166" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
       <Tag key="atk1" value="1233" />
@@ -22661,16 +22660,16 @@
     </EntityDescriptor>
     <EntityDescriptor id="Specimen_CE_14" movable="true" storable="true" category="specimen" sizeX="0.01" sizeY="0.01">
       <State id="default" spriteId="specimen_CE_14_stand" sellPrice="20000" />
-      <Tag key="spX100" value="200" />
-      <Tag key="odds" value="0" />
+      <Tag key="spX100" value="170" />
+      <Tag key="odds" value="20" />
       <Tag key="dna" value="CE" />
-      <Tag key="lifePoint" value="1130" />
+      <Tag key="lifePoint" value="1144" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="312" />
-      <Tag key="atk1p" value="468" />
-      <Tag key="atk2" value="312" />
-      <Tag key="atk2p" value="468" />
+      <Tag key="atk1" value="1232" />
+      <Tag key="atk1p" value="1232:AOE" />
+      <Tag key="atk2" value="1232" />
+      <Tag key="atk2p" value="1232:AOE" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:c;2:5:e;2p:15:e;1p:10:c" />
       <Tag key="changePrice00" value="99999999" />
@@ -22679,11 +22678,10 @@
       <Tag key="changePrice03" value="99999999" />
       <Tag key="type" value="LEGEND" />
       <Tag key="recipes" value="CE_14x[A-F][A-F]_*+CE_14x[A-F]_*" />
-      <Tag key="abilities" value="1:ability_retaliate;2:ability_retaliate_plus" />
-      <Tag key="abilityPct1" value="-15" />
-      <Tag key="abilityPct2" value="-25" />
+      <Tag key="abilities" value="1:ability_strengthen;2:ability_strengthen_plus" />
+      <Tag key="abilityPct1" value="15" />
+      <Tag key="abilityPct2" value="25" />
       <Tag key="orbSlots" value="n;n;s" />
-      <Tag key="PNJ" value="true" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
           <Param>Specimen_C_E</Param>
@@ -23089,9 +23087,9 @@
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
       <Tag key="atk1" value="312" />
-      <Tag key="atk1p" value="468" />
+      <Tag key="atk1p" value="468:AOE" />
       <Tag key="atk2" value="312" />
-      <Tag key="atk2p" value="468" />
+      <Tag key="atk2p" value="468:AOE" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:f;2:5:a;2p:15:a;1p:10:f" />
       <Tag key="type" value="LEGEND" />
@@ -23142,16 +23140,16 @@
     </EntityDescriptor>
     <EntityDescriptor id="Specimen_FC_14" movable="true" storable="true" category="specimen" sizeX="0.01" sizeY="0.01">
       <State id="default" spriteId="specimen_FC_14_stand" sellPrice="20000" />
-      <Tag key="spX100" value="200" />
-      <Tag key="odds" value="0" />
+      <Tag key="spX100" value="310" />
+      <Tag key="odds" value="20" />
       <Tag key="dna" value="FC" />
-      <Tag key="lifePoint" value="1130" />
+      <Tag key="lifePoint" value="2488" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="312" />
-      <Tag key="atk1p" value="468" />
-      <Tag key="atk2" value="312" />
-      <Tag key="atk2p" value="468" />
+      <Tag key="atk1" value="1127" />
+      <Tag key="atk1p" value="1632" />
+      <Tag key="atk2" value="1127" />
+      <Tag key="atk2p" value="1632" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:f;2:5:c;2p:15:c;1p:10:f" />
       <Tag key="changePrice00" value="99999999" />
@@ -23159,11 +23157,10 @@
       <Tag key="changePrice02" value="99999999" />
       <Tag key="changePrice03" value="99999999" />
       <Tag key="type" value="LEGEND" />
-      <Tag key="abilities" value="1:ability_weaken;2:ability_weaken_plus" />
-      <Tag key="abilityPct1" value="-20" />
-      <Tag key="abilityPct2" value="-30" />
+      <Tag key="abilities" value="1:ability_retaliate;2:ability_retaliate_plus" />
+      <Tag key="abilityPct1" value="-40" />
+      <Tag key="abilityPct2" value="-50" />
       <Tag key="orbSlots" value="n;n;s" />
-      <Tag key="PNJ" value="true" />
       <Tag key="recipes" value="FC_14x[A-F][A-F]_*+FC_14x[A-F]_*" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
@@ -23351,28 +23348,28 @@
     </EntityDescriptor>
     <EntityDescriptor id="Specimen_D_14" movable="true" storable="true" category="specimen" sizeX="0.01" sizeY="0.01">
       <State id="default" spriteId="specimen_D_14_stand" sellPrice="20000" />
-      <Tag key="spX100" value="300" />
-      <Tag key="odds" value="0" />
+      <Tag key="spX100" value="90" />
+      <Tag key="odds" value="20" />
       <Tag key="dna" value="D" />
-      <Tag key="lifePoint" value="1130" />
+      <Tag key="lifePoint" value="425" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="312" />
-      <Tag key="atk1p" value="468" />
-      <Tag key="atk2" value="342:AOE" />
+      <Tag key="atk1" value="655" />
+      <Tag key="atk1p" value="921" />
+      <Tag key="atk2" value="524:AOE" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:d;2:5:neutre;1p:10:d;2p:15:neutre" />
-      <Tag key="atk2p" value="513:AOE" />
+      <Tag key="atk2p" value="833:AOE" />
       <Tag key="type" value="LEGEND" />
       <Tag key="changePrice00" value="99999999" />
       <Tag key="changePrice01" value="99999999" />
       <Tag key="changePrice02" value="99999999" />
       <Tag key="changePrice03" value="99999999" />
-      <Tag key="abilities" value="1:ability_slash;2:ability_slash_plus" />
-      <Tag key="abilityPct1" value="-20" />
-      <Tag key="abilityPct2" value="-30" />
+      <Tag key="abilities" value="1:ability_retaliate;2:ability_retaliate_plus" />
+      <Tag key="recipes" value="D_14x[A-F][A-F]_*+D_14x[A-F]_*" />
+      <Tag key="abilityPct1" value="-70" />
+      <Tag key="abilityPct2" value="-110" />
       <Tag key="orbSlots" value="n;n;s" />
-      <Tag key="PNJ" value="true" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
           <Param>Specimen_D</Param>
@@ -23482,7 +23479,7 @@
       <Tag key="atk1p" value="2127" />
       <Tag key="atk2" value="1541" />
       <Tag key="atk2p" value="2127" />
-      <Tag key="bank" value="42" />
+      <Tag key="bank" value="84" />
       <Tag key="unlockAttack" value="1:1:a;2:5:b;2p:15:b;1p:10:a" />
       <Tag key="changePrice00" value="99999" />
       <Tag key="changePrice01" value="99999" />
@@ -23750,29 +23747,27 @@
     </EntityDescriptor>
     <EntityDescriptor id="Specimen_BE_15" movable="true" storable="true" category="specimen" sizeX="0.01" sizeY="0.01">
       <State id="default" spriteId="specimen_BE_15_stand" sellPrice="20000" />
-      <Tag key="spX100" value="200" />
-      <Tag key="odds" value="20" />
+      <Tag key="spX100" value="260" />
+      <Tag key="odds" value="0" />
       <Tag key="dna" value="BE" />
-      <Tag key="lifePoint" value="1130" />
+      <Tag key="lifePoint" value="3120" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="312" />
-      <Tag key="atk1p" value="468" />
-      <Tag key="atk2" value="312" />
-      <Tag key="atk2p" value="468" />
-      <Tag key="bank" value="42" />
+      <Tag key="atk1" value="2430" />
+      <Tag key="atk1p" value="3941" />
+      <Tag key="atk2" value="2430" />
+      <Tag key="atk2p" value="3941" />
+      <Tag key="bank" value="84" />
       <Tag key="unlockAttack" value="1:1:b;2:5:e;2p:15:e;1p:10:b" />
       <Tag key="changePrice00" value="540" />
       <Tag key="changePrice01" value="910" />
       <Tag key="changePrice02" value="1580" />
       <Tag key="changePrice03" value="2620" />
-      <Tag key="type" value="LEGEND" />
-      <Tag key="recipes" value="BE_15x[A-F][A-F]_*+BE_15x[A-F]_*" />
+      <Tag key="type" value="SEASONAL" />
       <Tag key="abilities" value="1:ability_regen;2:ability_regen_plus" />
-      <Tag key="abilityPct1" value="25" />
+      <Tag key="abilityPct1" value="20" />
       <Tag key="abilityPct2" value="35" />
       <Tag key="orbSlots" value="n;n;s" />
-      <Tag key="PNJ" value="true" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
           <Param>Specimen_B_E</Param>
@@ -24091,29 +24086,27 @@
     </EntityDescriptor>
     <EntityDescriptor id="Specimen_DD_15" movable="true" storable="true" category="specimen" sizeX="0.01" sizeY="0.01">
       <State id="default" spriteId="specimen_DD_15_stand" sellPrice="20000" />
-      <Tag key="spX100" value="200" />
-      <Tag key="odds" value="20" />
+      <Tag key="spX100" value="170" />
+      <Tag key="odds" value="0" />
       <Tag key="dna" value="DD" />
-      <Tag key="lifePoint" value="1130" />
+      <Tag key="lifePoint" value="3731" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="312" />
-      <Tag key="atk1p" value="468" />
-      <Tag key="atk2" value="156:AOE" />
-      <Tag key="atk2p" value="234:AOE" />
+      <Tag key="atk1" value="1241" />
+      <Tag key="atk1p" value="1799" />
+      <Tag key="atk2" value="1011:AOE" />
+      <Tag key="atk2p" value="1331:AOE" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:d;2:5:d;1p:10:d;2p:15:d" />
-      <Tag key="type" value="LEGEND" />
-      <Tag key="changePrice00" value="540" />
-      <Tag key="changePrice01" value="910" />
-      <Tag key="changePrice02" value="1580" />
-      <Tag key="changePrice03" value="2620" />
-      <Tag key="recipes" value="DD_15x[A-F][A-F]_*+DD_15x[A-F]_*" />
-      <Tag key="abilities" value="1:ability_slash;2:ability_slash_plus" />
+      <Tag key="type" value="CAPTAINPEACE" />
+      <Tag key="changePrice00" value="9999999" />
+      <Tag key="changePrice01" value="9999999" />
+      <Tag key="changePrice02" value="9999999" />
+      <Tag key="changePrice03" value="9999999" />
+      <Tag key="abilities" value="1:ability_weaken;2:ability_weaken_plus" />
       <Tag key="abilityPct1" value="-20" />
-      <Tag key="abilityPct2" value="-30" />
+      <Tag key="abilityPct2" value="-40" />
       <Tag key="orbSlots" value="n;n;s" />
-      <Tag key="PNJ" value="true" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
           <Param>Specimen_D_D</Param>
@@ -24182,29 +24175,28 @@
     </EntityDescriptor>
     <EntityDescriptor id="Specimen_EA_15" movable="true" storable="true" category="specimen" sizeX="0.01" sizeY="0.01">
       <State id="default" spriteId="specimen_EA_15_stand" sellPrice="20000" />
-      <Tag key="spX100" value="200" />
+      <Tag key="spX100" value="265" />
       <Tag key="odds" value="20" />
       <Tag key="dna" value="EA" />
-      <Tag key="lifePoint" value="1130" />
+      <Tag key="lifePoint" value="2611" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="312" />
-      <Tag key="atk1p" value="468" />
-      <Tag key="atk2" value="312" />
-      <Tag key="atk2p" value="468" />
+      <Tag key="atk1" value="1158" />
+      <Tag key="atk1p" value="1784" />
+      <Tag key="atk2" value="1158" />
+      <Tag key="atk2p" value="1784" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:e;2:5:a;2p:15:a;1p:10:e" />
       <Tag key="changePrice00" value="540" />
       <Tag key="changePrice01" value="910" />
       <Tag key="changePrice02" value="1580" />
       <Tag key="changePrice03" value="2620" />
-      <Tag key="type" value="LEGEND" />
+      <Tag key="type" value="HEROIC" />
       <Tag key="recipes" value="EA_15x[A-F][A-F]_*+EA_15x[A-F]_*" />
-      <Tag key="abilities" value="1:ability_strengthen;2:ability_strengthen_plus" />
-      <Tag key="abilityPct1" value="20" />
-      <Tag key="abilityPct2" value="30" />
-      <Tag key="orbSlots" value="n;n;s" />
-      <Tag key="PNJ" value="true" />
+      <Tag key="abilities" value="1:ability_shield;2:ability_shield_plus" />
+      <Tag key="abilityPct1" value="44" />
+      <Tag key="abilityPct2" value="63" />
+      <Tag key="orbSlots" value="n;n;n;s" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
           <Param>Specimen_E_A</Param>
@@ -24877,6 +24869,12 @@
       <State x="134" y="239" id="InitialState" spriteId="brb_sign" />
     </EntityDescriptor>
     <EntityDescriptor id="Material_Valentines26_Token" category="material" sizeX="1" sizeY="1">
+      <State x="134" y="239" id="InitialState" spriteId="brb_sign" />
+    </EntityDescriptor>
+    <EntityDescriptor id="Material_Easter26_Token" category="material" sizeX="1" sizeY="1">
+      <State x="134" y="239" id="InitialState" spriteId="brb_sign" />
+    </EntityDescriptor>
+    <EntityDescriptor id="Material_Hexcity_Token" category="material" sizeX="1" sizeY="1">
       <State x="134" y="239" id="InitialState" spriteId="brb_sign" />
     </EntityDescriptor>
   </DynamicEntities>

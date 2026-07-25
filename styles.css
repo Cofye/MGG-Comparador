@@ -1,157 +1,280 @@
+/* ===== RESET BASE ===== */
 body {
-  background: #111;
-  color: white;
-  font-family: Arial;
+  background: #0d0d0d;
+  color: #e8e8e8;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 20px;
 }
 
+/* ===== CONTENEDOR PRINCIPAL ===== */
+#table {
+  margin-top: 20px;
+  padding-bottom: 40px;
+}
+
+/* ===== TOP HEADER (contador + toggle) ===== */
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: #1e1e1e;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(4px);
+}
+
+.top-header .counter {
+  font-size: 16px;
+  font-weight: bold;
+  color: #aaa;
+}
+.top-header .counter span {
+  color: #fff;
+}
+
+/* Botón toggle */
+.toggle-btn {
+  background: #444;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #ccc;
+  transition: all 0.2s;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+.toggle-btn.active {
+  background: #4caf50;
+  color: white;
+  box-shadow: 0 0 12px rgba(76, 175, 80, 0.5);
+}
+.toggle-btn:hover {
+  transform: scale(1.02);
+}
+
+/* ===== HEADER DE COLUMNAS (sticky) ===== */
+.header-row {
+  display: grid;
+  grid-template-columns: 220px 230px 230px 50px;
+  gap: 50px;
+  font-weight: bold;
+  padding: 10px 0;
+  border-bottom: 2px solid #555;
+  background: #111;
+  position: sticky;
+  top: 68px; /* se ajusta dinámicamente con JS, pero dejamos fallback */
+  z-index: 5;
+  margin-bottom: 10px;
+}
+.header-row > div {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #ccc;
+}
+
+/* ===== FILAS DE MUTANTES ===== */
 .row {
   display: grid;
-  grid-template-columns: 220px 210px 210px 0px;
+  grid-template-columns: 220px 230px 230px 50px;
   gap: 50px;
-  margin-bottom: 75px;
+  padding: 20px 0 30px 0;
+  margin-bottom: 0;
+  border-bottom: 1px solid #2a2a2a;
+  position: relative;
+  transition: background 0.15s;
+}
+.row:last-child {
+  border-bottom: none;
+}
+/* Línea divisoria sutil */
+.row::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
 }
 
-.green { color: #4caf50; }
-.red { color: #f44336; }
-
-img.icon {
-  width: 24px;
-  height: 24px;
+/* Columna de imagen y nombre */
+.row > div:first-child {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.row > div:first-child img:first-child {
+  border-radius: 8px;
+  /*background: #1a1a1a;*/
+  padding: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+}
+.row > div:first-child > div {
+  font-weight: 600;
+  font-size: 1.05rem;
+  margin: 4px 0 2px;
+  text-align: center;
 }
 
-.icon {
-  width: 20px;
-  height: 20px;
+/* ===== BOTONES ORO/PLATINO ===== */
+.btn-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+.btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: url("https://s-ak.kobojo.com/mutants/assets/mobile/hud/mutopedia/btn_black.png");
+  background-size: cover;
+  transition: all 0.15s ease;
+  filter: brightness(0.8);
+}
+.btn:hover {
+  transform: scale(1.12);
+  filter: brightness(1);
+}
+.btn.active {
+  background: url("https://s-ak.kobojo.com/mutants/assets/mobile/hud/mutopedia/btn_white.png");
+  background-size: cover;
+  filter: brightness(1);
+}
+.btn-icon {
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
 }
 
+/* ===== ESTADÍSTICAS (cada línea) ===== */
 .stat-row {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 10px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.15s ease, transform 0.1s;
+  cursor: default;
+}
+.stat-row.highlight {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateX(3px);
 }
 
-.left {
+/* Columna de diferencia (cambio) */
+.diff-row {
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 10px;
-  line-height: 1.5;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+.diff-row:hover {
+  background: rgba(255, 255, 255, 0.06);
 }
 
-.right {
-  margin-left: auto;
-  text-align: right;
-  min-width: 50px;
+/* ===== ICONOS (todos iguales: 20px) ===== */
+.icon,
+img.icon,
+.icon-base,
+.icon-plus,
+.icon-aoe,
+.icon-wrapper img {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
-.center {
-  text-align: center;
-  min-width: 50px;
-  line-height: 1.5;
+.habilitie-plus {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-left: -20px;
+  z-index: -1;
 }
 
+/* Para el wrapper de capas (ataques) */
+.icon-wrapper {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+.icon-wrapper img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+}
+.icon-base {
+  z-index: 1;
+}
+.icon-plus {
+  z-index: 0;
+}
+.icon-aoe {
+  z-index: 2;
+}
+
+/* Icono espaciador (si se usa) */
 .icon-spacer {
   width: 20px;
   height: 20px;
   flex-shrink: 0;
 }
 
-.stat-row {
+/* ===== TEXTO Y ALINEACIÓN ===== */
+.left {
   display: flex;
-  justify-content: center;
   align-items: center;
   gap: 10px;
+  line-height: 1.5;
+  flex: 1;
+}
+.right {
+  margin-left: auto;
+  text-align: right;
+  min-width: 50px;
+  font-weight: 500;
+}
+.center {
+  text-align: center;
+  min-width: 50px;
+  line-height: 1.5;
+  font-weight: 500;
 }
 
-.diff-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* ===== COLORES DE DIFERENCIA ===== */
+.green { color: #66bb6a; }
+.red { color: #ef5350; }
+
+/* ===== RESPONSIVE (opcional) ===== */
+@media (max-width: 900px) {
+  .row, .header-row {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+  }
 }
-
-.icon-wrapper {
-  position: relative;
-  width: 20px;
-  height: 20px;
-}
-
-.icon-wrapper img {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  top: 0;
-  left: 0;
-  display: block;
-}
-
-/* capa base */
-.icon-base {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  z-index: 1;
-}
-
-/* overlay PLUS (fondo) */
-.icon-plus {
-  top: 0;
-  left: 0;
-  width: 20px;
-  height: 20px;
-  z-index: 0;
-}
-
-/* overlay AOE (encima) */
-.icon-aoe {
-  top: 0;
-  left: 0;
-  width: 20px;
-  height: 20px;
-  z-index: 2;
-}
-
-.btn {
-  width: 40px;
-  height: 40px; /* importante */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  cursor: pointer;
-  border-radius: 6px;
-
-  background: url("https://s-ak.kobojo.com/mutants/assets/mobile/hud/mutopedia/btn_black.png");
-  background-size: cover;
-
-  transition: 0.15s;
-}
-
-/* estrella */
-.btn-icon {
-  width: 22px; /* 🔥 aquí controlas SOLO la estrella */
-  height: 22px;
-}
-
-/* activo */
-.btn.active {
-  background: url("https://s-ak.kobojo.com/mutants/assets/mobile/hud/mutopedia/btn_white.png");
-  background-size: cover;
-}
-
-/* hover */
-.btn:hover {
-  transform: scale(1.1);
-}
-
-.btn-container {
-  display: flex;
-  gap: 8px; /* espacio entre estrellas */
-  justify-content: center; /* opcional */
-  margin-top: 5px;
-}
-
-.row > div:first-child {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+@media (max-width: 700px) {
+  .row, .header-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
 }

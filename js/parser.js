@@ -28,7 +28,8 @@ export function parseXML(xmlString) {
       abilities: parseAbilities(tags.abilities),
       unlock: parseUnlock(tags.unlockAttack),
 
-      dna: tags.dna
+      dna: tags.dna,
+      bank: +tags.bank || 0
     };
   });
 }

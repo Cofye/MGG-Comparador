@@ -22,8 +22,8 @@ async function load() {
 
   // 🎯 actualizar título correctamente
   title.textContent = changes.length === 1
-    ? "1 mutante fue actualizado"
-    : `${changes.length} mutantes fueron actualizados`;
+    ? ""
+    : ``;
 
   render(changes);
 }
