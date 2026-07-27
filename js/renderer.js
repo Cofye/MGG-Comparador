@@ -211,10 +211,6 @@ function updateRow(id) {
   row.replaceWith(newRow);
 }
 
-
-
-
-
 // --- Funciones auxiliares ---
 function getAttackValue(atk, isPlus, mod) {
   const base = isPlus && calculatedMode ? calcRealDamage(atk.value) : atk.value;
@@ -408,7 +404,8 @@ function addAbility(parent, label, val, ability, oldVal = null, statType = '', o
   right.className = "right";
 
   const icon = createAbilityIcon(ability, label.includes("+"));
-  // Detectar cambio de habilidad
+  
+  // Texto: detectar cambio de habilidad (REWORK)
   const labelSpan = document.createElement("span");
   labelSpan.textContent = label;
   if (oldAbility !== null && oldAbility !== undefined && oldAbility !== ability) {
@@ -416,13 +413,18 @@ function addAbility(parent, label, val, ability, oldVal = null, statType = '', o
   }
   left.append(icon, labelSpan);
 
+  // Número: comparación por potencia absoluta
   right.textContent = val + "%";
 
   if (oldVal !== null) {
-    let improved = val > oldVal;
-    if (val < 0 && oldVal < 0) improved = val < oldVal;
-    if (improved) right.classList.add("green");
-    else if (val !== oldVal) right.classList.add("red");
+    const absVal = Math.abs(val);
+    const absOld = Math.abs(oldVal);
+    if (absVal > absOld) {
+      right.classList.add("green");
+    } else if (absVal < absOld) {
+      right.classList.add("red");
+    }
+    // Si son iguales, no se pinta.
   }
 
   row.append(left, right);
@@ -512,7 +514,7 @@ function addDiff(parent, oldVal, newVal, isAbility = false, isSpeed = false, sta
     return;
   }
 
-  // Formatear
+  // Formateo (speed, etc.)
   if (isSpeed) {
     diffValue = Math.round(diffValue * 100) / 100;
     if (diffValue % 1 !== 0) diffValue = diffValue.toFixed(2);
