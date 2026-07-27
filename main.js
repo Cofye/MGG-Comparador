@@ -6,7 +6,7 @@ async function load() {
   const title = document.getElementById("title");
 
   // 🔄 estado inicial
-  title.textContent = "Buscando cambios...";
+  title.textContent = "Cargando calculadora...";
 
   // 🔥 evitar caché (usar backticks)
   const oldXML = await fetch(`./data/gamedefinitions_old.xml?t=${Date.now()}`)
