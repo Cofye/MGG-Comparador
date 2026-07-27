@@ -1,6 +1,6 @@
-import { parseXML } from './js/parser.js';
-import { compareData } from './js/comparator.js';
-import { render } from './js/renderer.js';
+import { parseXML } from './js/parser.js?v=2';
+import { compareData } from './js/comparator.js?v=2';
+import { render } from './js/renderer.js?v=2';
 
 async function load() {
   const title = document.getElementById("title");
