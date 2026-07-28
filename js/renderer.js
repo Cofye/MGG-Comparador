@@ -7,6 +7,7 @@ let namesMap = {};
 let calculatedMode = true;
 let namesLoaded = false;
 let loadingNames = false;
+let gachaLoaded = false;
 
 // --- Carga de nombres (con caché) ---
 async function loadNames() {
@@ -39,18 +40,16 @@ async function loadNames() {
   return namesMap;
 }
 
-// --- Renderizado principal (con encabezado persistente) ---
+// --- Renderizado principal ---
 export async function render(data) {
   currentData = data;
   const container = document.getElementById("table");
 
-  // --- 1. Asegurar que el top-header y header-row existen ---
   if (!container.querySelector('.top-header')) {
     container.appendChild(createTopHeader('Cargando datos...'));
   }
   if (!container.querySelector('.header-row')) {
     container.appendChild(createHeaderRow());
-    // Ajuste dinámico del top del header-row
     requestAnimationFrame(() => {
       const topHeader = container.querySelector('.top-header');
       const headerRow = container.querySelector('.header-row');
@@ -60,21 +59,20 @@ export async function render(data) {
     });
   }
 
-  // --- 2. Cargar nombres (si es necesario) ---
+  if (!gachaLoaded) {
+    await loadGachas();
+  }
   if (!namesLoaded) {
     await loadNames();
   }
 
-  // --- 3. Actualizar contador ---
   const counterSpan = container.querySelector('#mutant-counter');
   if (counterSpan) {
     counterSpan.textContent = data.length;
   }
 
-  // --- 4. Eliminar filas antiguas (excepto encabezados) ---
   container.querySelectorAll('.row').forEach(el => el.remove());
 
-  // --- 5. Crear nuevas filas ---
   data.forEach(entry => {
     const row = document.createElement("div");
     const id = entry.new.id;
@@ -89,11 +87,10 @@ export async function render(data) {
     container.appendChild(row);
   });
 
-  // --- 6. Eventos de hover (se re-instalan) ---
   setupHighlightEvents(container);
 }
 
-// --- Crear top-header (contador + leyenda + toggle) ---
+// --- Top header ---
 function createTopHeader(initialText = 'Cargando datos...') {
   const topHeader = document.createElement("div");
   topHeader.className = "top-header";
@@ -120,11 +117,9 @@ function createTopHeader(initialText = 'Cargando datos...') {
   return topHeader;
 }
 
-// --- Crear header-row (columnas fijas) ---
 function createHeaderRow() {
   const headerRow = document.createElement("div");
   headerRow.className = "header-row";
-
   const col1 = document.createElement("div");
   col1.textContent = "Mutante";
   const col2 = document.createElement("div");
@@ -133,12 +128,11 @@ function createHeaderRow() {
   col3.textContent = "Después";
   const col4 = document.createElement("div");
   col4.textContent = "Cambio";
-
   headerRow.append(col1, col2, col3, col4);
   return headerRow;
 }
 
-// --- Eventos de hover ---
+// --- Hover ---
 function setupHighlightEvents(container) {
   container.removeEventListener('mouseenter', highlightMouseEnter);
   container.removeEventListener('mouseleave', highlightMouseLeave);
@@ -166,7 +160,7 @@ function highlightMouseLeave(e) {
     .forEach(el => el.classList.remove('highlight'));
 }
 
-// --- Alternar modo calculado (rápido) ---
+// --- Toggle ---
 export function toggleCalculatedMode() {
   calculatedMode = !calculatedMode;
   const btn = document.getElementById('toggle-calculated-btn');
@@ -179,11 +173,9 @@ function refreshAllRows() {
     const id = entry.new.id;
     const row = document.querySelector(`.row[data-id="${id}"]`);
     if (!row) return;
-
-    const newBefore = createStats(entry.old, id);          // ← columna "Antes"
-    const newAfter = createStats(entry.new, id, entry.old); // ← columna "Después"
-    const newDiff = createDiffScaled(entry.old, entry.new, id); // ← columna "Cambio"
-
+    const newBefore = createStats(entry.old, id);
+    const newAfter = createStats(entry.new, id, entry.old);
+    const newDiff = createDiffScaled(entry.old, entry.new, id);
     const children = row.children;
     if (children.length >= 4) {
       children[1].replaceWith(newBefore);
@@ -193,13 +185,11 @@ function refreshAllRows() {
   });
 }
 
-// --- Actualizar fila por cambio de oro/platino ---
 function updateRow(id) {
   const row = document.querySelector(`.row[data-id="${id}"]`);
   if (!row) return;
   const entry = currentData.find(e => e.new.id === id);
   if (!entry) return;
-
   const newRow = document.createElement("div");
   newRow.className = "row";
   newRow.dataset.id = id;
@@ -207,25 +197,45 @@ function updateRow(id) {
   newRow.appendChild(createStats(entry.old, id));
   newRow.appendChild(createStats(entry.new, id, entry.old));
   newRow.appendChild(createDiffScaled(entry.old, entry.new, id));
-
   row.replaceWith(newRow);
 }
 
-// --- Funciones auxiliares ---
+// --- Multiplicadores ---
 function getAttackValue(atk, isPlus, mod) {
   const base = isPlus && calculatedMode ? calcRealDamage(atk.value) : atk.value;
   return Math.floor(base * mod);
 }
 
-function getMultiplier(mode) {
-  if (mode === "bronze") return 1.10;
-  if (mode === "silver") return 1.30;
-  if (mode === "gold") return 1.75;
-  if (mode === "platinum") return 2;
-  return 1;
+function getMultipliers(id) {
+  const mode = modeMap[id];
+  let starMult = 1;
+  let gachaAtk = 1;
+  let gachaLife = 1;
+
+  if (mode === "bronze") starMult = 1.10;
+  else if (mode === "silver") starMult = 1.30;
+  else if (mode === "gold") starMult = 1.75;
+  else if (mode === "platinum") starMult = 2.00;
+  else {
+    const gachaList = gachaMap[id];
+    if (gachaList) {
+      const found = gachaList.find(g => g.gachaId === mode);
+      if (found) {
+        const bonus = found.bonus / 100;
+        const starBonus = getStarBonus(found.stars);
+        gachaAtk = (1 + bonus) * (1 + starBonus);
+        gachaLife = 1 - bonus + starBonus;
+      }
+    }
+  }
+
+  return {
+    atk: starMult * gachaAtk,
+    life: starMult * gachaLife
+  };
 }
 
-// --- Creación de columnas ---
+// --- Columnas ---
 function createColumnInfo(data, name) {
   const div = document.createElement("div");
   const img = document.createElement("img");
@@ -242,11 +252,23 @@ function createColumnInfo(data, name) {
   title.textContent = name || data.id;
   const btnContainer = document.createElement("div");
   btnContainer.className = "btn-container";
+
+  // Botones de estrella
   const btnBronze = createButton("bronze", data.id);
   const btnSilver = createButton("silver", data.id);
   const btnGold = createButton("gold", data.id);
   const btnPlat = createButton("platinum", data.id);
   btnContainer.append(btnBronze, btnSilver, btnGold, btnPlat);
+
+  // Botones de Gacha (uno por cada skin)
+  const gachaList = gachaMap[data.id];
+  if (gachaList && gachaList.length > 0) {
+    gachaList.forEach(g => {
+      const gachaBtn = createGachaButton(g.gachaId, data.id);
+      btnContainer.appendChild(gachaBtn);
+    });
+  }
+
   div.append(img, title, btnContainer);
   return div;
 }
@@ -272,32 +294,45 @@ function createButton(type, id) {
   return btn;
 }
 
+function createGachaButton(gachaId, specimenId) {
+  const btn = document.createElement("div");
+  btn.className = "btn gacha-btn";
+  const icon = document.createElement("img");
+  icon.src = `https://s-ak.kobojo.com/mutants/assets/gachacontent/icon_${gachaId}.png`;
+  icon.className = "btn-icon-gacha";
+  btn.appendChild(icon);
+  if (modeMap[specimenId] === gachaId) btn.classList.add("active");
+  btn.onclick = () => {
+    if (modeMap[specimenId] === gachaId) delete modeMap[specimenId];
+    else modeMap[specimenId] = gachaId;
+    updateRow(specimenId);
+  };
+  return btn;
+}
+
 // --- Estadísticas ---
 function createStats(data, id, oldData = null) {
   const div = document.createElement("div");
-  const mod = getMultiplier(modeMap[id]);
+  const mult = getMultipliers(id);
 
-  addStat(div, "life.png", "Vida", data.life * mod, oldData ? oldData.life * mod : null, 'life');
+  addStat(div, "life.png", "Vida", data.life * mult.life, oldData ? oldData.life * mult.life : null, 'life');
   addStat(div, "speed.png", "Velocidad", data.speed, oldData?.speed, 'speed', true);
 
-  // Ataques: pasamos oldData para comparar gen y aoe
-  addAttack(div, "Ataque 1", data.atk1, data.unlock["1"], mod,
-    oldData ? getAttackValue(oldData.atk1, false, mod) : null, false, 'atk1',
+  addAttack(div, "Ataque 1", data.atk1, data.unlock["1"], mult.atk,
+    oldData ? getAttackValue(oldData.atk1, false, mult.atk) : null, false, 'atk1',
     oldData ? oldData.atk1 : null, oldData ? oldData.unlock["1"] : null);
-  addAttack(div, "Ataque 1+", data.atk1p, data.unlock["1p"], mod,
-    oldData ? getAttackValue(oldData.atk1p, true, mod) : null, true, 'atk1p',
+  addAttack(div, "Ataque 1+", data.atk1p, data.unlock["1p"], mult.atk,
+    oldData ? getAttackValue(oldData.atk1p, true, mult.atk) : null, true, 'atk1p',
     oldData ? oldData.atk1p : null, oldData ? oldData.unlock["1p"] : null);
-  addAttack(div, "Ataque 2", data.atk2, data.unlock["2"], mod,
-    oldData ? getAttackValue(oldData.atk2, false, mod) : null, false, 'atk2',
+  addAttack(div, "Ataque 2", data.atk2, data.unlock["2"], mult.atk,
+    oldData ? getAttackValue(oldData.atk2, false, mult.atk) : null, false, 'atk2',
     oldData ? oldData.atk2 : null, oldData ? oldData.unlock["2"] : null);
-  addAttack(div, "Ataque 2+", data.atk2p, data.unlock["2p"], mod,
-    oldData ? getAttackValue(oldData.atk2p, true, mod) : null, true, 'atk2p',
+  addAttack(div, "Ataque 2+", data.atk2p, data.unlock["2p"], mult.atk,
+    oldData ? getAttackValue(oldData.atk2p, true, mult.atk) : null, true, 'atk2p',
     oldData ? oldData.atk2p : null, oldData ? oldData.unlock["2p"] : null);
 
-  // Habilidades: pasamos oldAbility para comparar nombre
   addAbility(div, "Habilidad", data.ability1, data.abilities.a1, oldData?.ability1, 'ability1', oldData ? oldData.abilities.a1 : null);
   addAbility(div, "Habilidad+", data.ability2, data.abilities.a2, oldData?.ability2, 'ability2', oldData ? oldData.abilities.a2 : null);
-
   addStat(div, "credits.png", "Créditos", data.bank, oldData ? oldData.bank : null, 'bank');
 
   return div;
@@ -351,19 +386,15 @@ function addAttack(parent, label, atk, gen, mod, oldAtkValue = null, isPlus = fa
   const icon = createAttackIcon(gen, atk);
   const value = getAttackValue(atk, isPlus, mod);
 
-  // Detectar cambios cualitativos
-  let labelText = label + (atk.aoe ? " Triple" : "");
   const labelSpan = document.createElement("span");
-  labelSpan.textContent = labelText;
+  labelSpan.textContent = label + (atk.aoe ? " Triple" : "");
   if (oldGen !== null && oldGen !== undefined && oldGen !== gen) {
     labelSpan.classList.add("changed");
   }
   if (oldAtkObj !== null && oldAtkObj !== undefined && oldAtkObj.aoe !== atk.aoe) {
     labelSpan.classList.add("changed");
   }
-  // Si hay cambio, añadir clase al contenedor del texto
   left.append(icon, labelSpan);
-  // Nota: antes se usaba document.createTextNode, pero ahora usamos span para aplicar clase.
 
   right.textContent = Math.floor(value);
 
@@ -413,8 +444,6 @@ function addAbility(parent, label, val, ability, oldVal = null, statType = '', o
   right.className = "right";
 
   const icon = createAbilityIcon(ability, label.includes("+"));
-  
-  // Texto: detectar cambio de habilidad (REWORK)
   const labelSpan = document.createElement("span");
   labelSpan.textContent = label;
   if (oldAbility !== null && oldAbility !== undefined && oldAbility !== ability) {
@@ -422,7 +451,6 @@ function addAbility(parent, label, val, ability, oldVal = null, statType = '', o
   }
   left.append(icon, labelSpan);
 
-  // Número: comparación por potencia absoluta
   right.textContent = val + "%";
 
   if (oldVal !== null) {
@@ -433,7 +461,6 @@ function addAbility(parent, label, val, ability, oldVal = null, statType = '', o
     } else if (absVal < absOld) {
       right.classList.add("red");
     }
-    // Si son iguales, no se pinta.
   }
 
   row.append(left, right);
@@ -460,12 +487,10 @@ function createAbilityIcon(ability, isPlus) {
   return wrapper;
 }
 
-// --- Diferencias ---
 function createDiffScaled(oldD, newD, id) {
   const div = document.createElement("div");
-  const mode = modeMap[id];
-  const oldStats = getFinalStats(oldD, mode);
-  const newStats = getFinalStats(newD, mode);
+  const oldStats = getFinalStats(oldD, id);
+  const newStats = getFinalStats(newD, id);
 
   addDiff(div, oldStats.life, newStats.life, false, false, 'life');
   addDiff(div, oldStats.speed, newStats.speed, false, true, 'speed');
@@ -480,15 +505,15 @@ function createDiffScaled(oldD, newD, id) {
   return div;
 }
 
-function getFinalStats(data, mode) {
-  const mod = getMultiplier(mode);
+function getFinalStats(data, id) {
+  const mult = getMultipliers(id);
   return {
-    life: Math.floor(data.life * mod),
+    life: Math.floor(data.life * mult.life),
     speed: Math.round(data.speed * 100) / 100,
-    atk1: Math.floor(data.atk1.value * mod),
-    atk1p: Math.floor((calculatedMode ? calcRealDamage(data.atk1p.value) : data.atk1p.value) * mod),
-    atk2: Math.floor(data.atk2.value * mod),
-    atk2p: Math.floor((calculatedMode ? calcRealDamage(data.atk2p.value) : data.atk2p.value) * mod),
+    atk1: Math.floor(data.atk1.value * mult.atk),
+    atk1p: Math.floor((calculatedMode ? calcRealDamage(data.atk1p.value) : data.atk1p.value) * mult.atk),
+    atk2: Math.floor(data.atk2.value * mult.atk),
+    atk2p: Math.floor((calculatedMode ? calcRealDamage(data.atk2p.value) : data.atk2p.value) * mult.atk),
     ability1: data.ability1,
     ability2: data.ability2,
     bank: data.bank
@@ -523,7 +548,6 @@ function addDiff(parent, oldVal, newVal, isAbility = false, isSpeed = false, sta
     return;
   }
 
-  // Formateo (speed, etc.)
   if (isSpeed) {
     diffValue = Math.round(diffValue * 100) / 100;
     if (diffValue % 1 !== 0) diffValue = diffValue.toFixed(2);
@@ -548,4 +572,53 @@ function addDiff(parent, oldVal, newVal, isAbility = false, isSpeed = false, sta
 
   row.appendChild(right);
   parent.appendChild(row);
+}
+
+
+let gachaMap = {};
+
+async function loadGachas() {
+  try {
+    const url = `https://s-beta.kobojo.com/mutants/gameconfig/gacha.xml?t=${Date.now()}`;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const xmlString = await response.text();
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(xmlString, "text/xml");
+
+    const gachas = xml.getElementsByTagName("Gacha");
+    for (const gacha of gachas) {
+      const gachaId = gacha.getAttribute("id");
+      const specimens = gacha.querySelectorAll("GachaSpecimen");
+      for (const spec of specimens) {
+        const specimenId = spec.getAttribute("specimen");
+        const stars = parseInt(spec.getAttribute("stars"), 10);
+        const bonus = parseInt(spec.getAttribute("bonus"), 10);
+        
+        // 🔥 FILTRO ESPECIAL PARA Specimen_FD_03
+        if (specimenId === "Specimen_FD_03" && gachaId !== "japan") {
+          continue; // Ignorar este Gacha para este specimen
+        }
+
+        if (!gachaMap[specimenId]) gachaMap[specimenId] = [];
+        gachaMap[specimenId].push({ gachaId, stars, bonus });
+      }
+    }
+    console.log(`✅ Gachas cargados: ${Object.keys(gachaMap).length} specimens`);
+  } catch (error) {
+    console.error("❌ Error al cargar gacha.xml:", error);
+  } finally {
+    gachaLoaded = true;
+  }
+}
+
+function getStarBonus(stars) {
+  switch(stars) {
+    case 0: return 0;
+    case 1: return 0.10;
+    case 2: return 0.30;
+    case 3: return 0.75;
+    case 4: return 1.00;
+    default: return 0;
+  }
 }
