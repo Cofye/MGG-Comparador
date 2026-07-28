@@ -240,16 +240,32 @@ function createColumnInfo(data, name) {
   const div = document.createElement("div");
   const img = document.createElement("img");
   img.width = 80;
+
   let base = `https://s-ak.kobojo.com/mutants/assets/thumbnails/${data.id.toLowerCase()}`;
   let url = base + ".png";
-  if (modeMap[data.id] === "gold") url = base + "_gold.png";
-  else if (modeMap[data.id] === "platinum") url = base + "_platinum.png";
-  else if (modeMap[data.id] === "bronze") url = base + "_bronze.png";
-  else if (modeMap[data.id] === "silver") url = base + "_silver.png";
+  const activeMode = modeMap[data.id];
+
+  if (activeMode) {
+    // Estrellas
+    if (activeMode === "gold") url = base + "_gold.png";
+    else if (activeMode === "platinum") url = base + "_platinum.png";
+    else if (activeMode === "bronze") url = base + "_bronze.png";
+    else if (activeMode === "silver") url = base + "_silver.png";
+    else {
+      // Si no es estrella, asumimos que es un Gacha (el modo es el gachaId)
+      const gachaList = gachaMap[data.id];
+      if (gachaList && gachaList.some(g => g.gachaId === activeMode)) {
+        url = base + `_${activeMode}.png`;
+      }
+    }
+  }
+
   img.src = url;
   img.onerror = () => { img.src = base + ".png"; };
+
   const title = document.createElement("div");
   title.textContent = name || data.id;
+
   const btnContainer = document.createElement("div");
   btnContainer.className = "btn-container";
 
@@ -532,11 +548,13 @@ function addDiff(parent, oldVal, newVal, isAbility = false, isSpeed = false, sta
   let isPositive;
 
   if (isAbility) {
+    // Habilidades: comparación por potencia absoluta
     const absOld = Math.abs(oldVal);
     const absNew = Math.abs(newVal);
     diffValue = absNew - absOld;
     isPositive = diffValue > 0;
   } else {
+    // Stats normales: diferencia directa
     diffValue = newVal - oldVal;
     isPositive = diffValue > 0;
   }
@@ -548,25 +566,38 @@ function addDiff(parent, oldVal, newVal, isAbility = false, isSpeed = false, sta
     return;
   }
 
+  // --- Formateo de la diferencia numérica ---
+  let displayDiff;
   if (isSpeed) {
-    diffValue = Math.round(diffValue * 100) / 100;
-    if (diffValue % 1 !== 0) diffValue = diffValue.toFixed(2);
+    displayDiff = (diffValue > 0 ? '+' : '') + diffValue.toFixed(2);
   } else {
-    diffValue = Math.floor(diffValue);
+    displayDiff = (diffValue > 0 ? '+' : '') + Math.floor(diffValue);
   }
 
-  let absDiff = Math.abs(diffValue);
-  if (isSpeed) {
-    absDiff = Math.round(absDiff * 100) / 100;
-    if (absDiff % 1 !== 0) absDiff = absDiff.toFixed(2);
-  } else {
-    absDiff = Math.floor(absDiff);
+  // --- Calcular porcentaje solo para stats normales (no habilidades) ---
+  let percentageText = '';
+  if (!isAbility && oldVal !== 0) {
+    const percent = ((newVal - oldVal) / oldVal) * 100;
+    const sign = percent > 0 ? '+' : '';
+    const percentDisplay = percent.toFixed(1); // un decimal
+    percentageText = ` (${sign}${percentDisplay}%)`;
   }
 
-  let sign = isPositive ? "+" : "-";
-  const displayValue = isAbility ? `${sign}${absDiff}%` : `${sign}${absDiff}`;
+  // --- Construir el texto final ---
+  let displayValue;
+  if (isAbility) {
+    // Para habilidades: usar el formato existente (ej: "+5%")
+    let absDiff = Math.abs(diffValue);
+    let sign = isPositive ? '+' : '-';
+    displayValue = `${sign}${absDiff}%`;
+  } else {
+    // Para stats normales: diferencia + porcentaje
+    displayValue = displayDiff + percentageText;
+  }
+
   right.textContent = displayValue;
 
+  // Colores
   if (isPositive) right.classList.add("green");
   else right.classList.add("red");
 
