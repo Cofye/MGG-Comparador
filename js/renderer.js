@@ -43,7 +43,7 @@ async function loadNames() {
 }
 
 // --- Renderizado principal ---
-export async function render(entries) {
+export async function render(entries, updatedCount) {
   currentData = entries;
   const container = document.getElementById("table");
 
@@ -70,7 +70,7 @@ export async function render(entries) {
 
   const counterSpan = container.querySelector('#mutant-counter');
   if (counterSpan) {
-    counterSpan.textContent = entries.length;
+    counterSpan.textContent = updatedCount; // solo los que cambiaron realmente
   }
 
   container.querySelectorAll('.row').forEach(el => el.remove());

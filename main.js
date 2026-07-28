@@ -1,6 +1,9 @@
 import { parseXML } from './js/parser.js?v=2';
-import { compareData } from './js/comparator.js?v=2';
 import { render } from './js/renderer.js?v=2';
+
+function hasChanges(o, n) {
+  return JSON.stringify(o) !== JSON.stringify(n);
+}
 
 async function load() {
   const title = document.getElementById("title");
@@ -16,25 +19,32 @@ async function load() {
   const announcedData = parseXML(announcedXML);
   const newData = parseXML(newXML);
 
-  // 1. Obtener solo los mutantes que cambiaron (igual que antes)
-  const changes = compareData(oldData, newData);
-
-  // 2. Mapear cambios para incluir los anuncios
+  const oldMap = Object.fromEntries(oldData.map(x => [x.id, x]));
   const announcedMap = Object.fromEntries(announcedData.map(x => [x.id, x]));
+  const newMap = Object.fromEntries(newData.map(x => [x.id, x]));
 
-  const entries = changes.map(change => {
-    const id = change.new.id;
-    return {
-      id,
-      old: change.old,
-      announced: announcedMap[id] || null,
-      new: change.new
-    };
-  });
+  const allIds = new Set([...Object.keys(newMap), ...Object.keys(announcedMap)]);
+  const entries = [];
+  let updatedCount = 0;
 
-  // 3. Actualizar título y renderizar
-  title.textContent = `🧪 ${entries.length} mutantes con cambios`;
-  render(entries);
+  for (const id of allIds) {
+    const old = oldMap[id] || null;
+    const announced = announcedMap[id] || null;
+    const current = newMap[id] || null;
+
+    if (!current) continue;
+
+    const hasRealChange = old && hasChanges(old, current);
+    const hasAnnouncedChange = announced && old && hasChanges(old, announced);
+
+    if (hasRealChange || hasAnnouncedChange) {
+      entries.push({ id, old, announced, new: current });
+      if (hasRealChange) updatedCount++;
+    }
+  }
+
+  title.textContent = `🧪 ${entries.length} mutantes relevantes`;
+  render(entries, updatedCount);
 }
 
 load();
