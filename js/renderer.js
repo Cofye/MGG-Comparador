@@ -218,6 +218,8 @@ function getAttackValue(atk, isPlus, mod) {
 }
 
 function getMultiplier(mode) {
+  if (mode === "bronze") return 1.10;
+  if (mode === "silver") return 1.30;
   if (mode === "gold") return 1.75;
   if (mode === "platinum") return 2;
   return 1;
@@ -231,16 +233,20 @@ function createColumnInfo(data, name) {
   let base = `https://s-ak.kobojo.com/mutants/assets/thumbnails/${data.id.toLowerCase()}`;
   let url = base + ".png";
   if (modeMap[data.id] === "gold") url = base + "_gold.png";
-  if (modeMap[data.id] === "platinum") url = base + "_platinum.png";
+  else if (modeMap[data.id] === "platinum") url = base + "_platinum.png";
+  else if (modeMap[data.id] === "bronze") url = base + "_bronze.png";
+  else if (modeMap[data.id] === "silver") url = base + "_silver.png";
   img.src = url;
   img.onerror = () => { img.src = base + ".png"; };
   const title = document.createElement("div");
   title.textContent = name || data.id;
   const btnContainer = document.createElement("div");
   btnContainer.className = "btn-container";
+  const btnBronze = createButton("bronze", data.id);
+  const btnSilver = createButton("silver", data.id);
   const btnGold = createButton("gold", data.id);
   const btnPlat = createButton("platinum", data.id);
-  btnContainer.append(btnGold, btnPlat);
+  btnContainer.append(btnBronze, btnSilver, btnGold, btnPlat);
   div.append(img, title, btnContainer);
   return div;
 }
@@ -249,9 +255,12 @@ function createButton(type, id) {
   const btn = document.createElement("div");
   btn.className = "btn";
   const icon = document.createElement("img");
-  icon.src = type === "gold"
-    ? "https://s-ak.kobojo.com/mutants/assets/mobile/thumbnails/star_gold.png"
-    : "https://s-ak.kobojo.com/mutants/assets/mobile/thumbnails/star_platinum.png";
+  let iconSrc;
+  if (type === "gold") iconSrc = "https://s-ak.kobojo.com/mutants/assets/mobile/thumbnails/star_gold.png";
+  else if (type === "platinum") iconSrc = "https://s-ak.kobojo.com/mutants/assets/mobile/thumbnails/star_platinum.png";
+  else if (type === "bronze") iconSrc = "https://s-ak.kobojo.com/mutants/assets/mobile/thumbnails/star_bronze.png";
+  else if (type === "silver") iconSrc = "https://s-ak.kobojo.com/mutants/assets/mobile/thumbnails/star_silver.png";
+  icon.src = iconSrc;
   icon.className = "btn-icon";
   btn.appendChild(icon);
   if (modeMap[id] === type) btn.classList.add("active");
