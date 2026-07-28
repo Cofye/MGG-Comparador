@@ -6142,7 +6142,7 @@
       <Tag key="spX100" value="210" />
       <Tag key="odds" value="0" />
       <Tag key="dna" value="FC" />
-      <Tag key="lifePoint" value="2845" />
+      <Tag key="lifePoint" value="2445" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
       <Tag key="atk1" value="698" />
@@ -8380,7 +8380,7 @@
       <Tag key="type" value="CAPTAINPEACE" />
       <Tag key="abilities" value="1:ability_strengthen;2:ability_strengthen_plus" />
       <Tag key="abilityPct1" value="22" />
-      <Tag key="abilityPct2" value="41" />
+      <Tag key="abilityPct2" value="38" />
       <Tag key="orbSlots" value="n;n;s" />
       <Tag key="hideSkins" value="platinum" />
       <CustomScript name="onPlaceOver">
@@ -9423,9 +9423,9 @@
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
       <Tag key="atk1" value="1188" />
-      <Tag key="atk1p" value="1982" />
+      <Tag key="atk1p" value="1942" />
       <Tag key="atk2" value="1188" />
-      <Tag key="atk2p" value="1982" />
+      <Tag key="atk2p" value="1984" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:c;2:5:d;2p:15:d;1p:10:c" />
       <Tag key="type" value="CAPTAINPEACE" />
@@ -14383,7 +14383,7 @@
       <Tag key="changePrice03" value="100000" />
       <Tag key="abilities" value="1:ability_strengthen;2:ability_strengthen_plus" />
       <Tag key="abilityPct1" value="8" />
-      <Tag key="abilityPct2" value="20" />
+      <Tag key="abilityPct2" value="13" />
       <Tag key="orbSlots" value="n;n;s" />
       <Tag key="noBaseSkin" value="true" />
       <CustomScript name="onPlaceOver">
@@ -15479,7 +15479,7 @@
       <Tag key="specimen" value="true" />
       <Tag key="atk1" value="1211" />
       <Tag key="atk1p" value="2316" />
-      <Tag key="atk2" value="616:AOE" />
+      <Tag key="atk2" value="606:AOE" />
       <Tag key="atk2p" value="1552:AOE" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:b;2:5:b;1p:10:b;2p:15:b" />
@@ -15894,7 +15894,7 @@
       <Tag key="atk1" value="1295" />
       <Tag key="atk1p" value="1943" />
       <Tag key="atk2" value="748:AOE" />
-      <Tag key="atk2p" value="1121:AOE" />
+      <Tag key="atk2p" value="1221:AOE" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:d;2:5:d;1p:10:d;2p:15:d" />
       <Tag key="type" value="CAPTAINPEACE" />
@@ -15951,7 +15951,7 @@
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
       <Tag key="atk1" value="1123" />
-      <Tag key="atk1p" value="1981" />
+      <Tag key="atk1p" value="1941" />
       <Tag key="atk2" value="1123" />
       <Tag key="atk2p" value="1981" />
       <Tag key="bank" value="42" />
@@ -17772,7 +17772,7 @@
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
       <Tag key="atk1" value="1240" />
-      <Tag key="atk1p" value="1961" />
+      <Tag key="atk1p" value="1981" />
       <Tag key="atk2" value="752:AOE" />
       <Tag key="atk2p" value="1222:AOE" />
       <Tag key="bank" value="42" />
@@ -22558,6 +22558,7 @@
       <Tag key="changePrice02" value="1580" />
       <Tag key="changePrice03" value="2620" />
       <Tag key="type" value="GACHA" />
+      <Tag key="noBaseSkin" value="true" />
       <Tag key="abilities" value="1:ability_retaliate;2:ability_retaliate_plus" />
       <Tag key="abilityPct1" value="-10" />
       <Tag key="abilityPct2" value="-20" />
@@ -22618,6 +22619,7 @@
       <Tag key="changePrice02" value="99999999" />
       <Tag key="changePrice03" value="99999999" />
       <Tag key="type" value="GACHA" />
+      <Tag key="noBaseSkin" value="true" />
       <Tag key="abilities" value="1:ability_strengthen;2:ability_strengthen_plus" />
       <Tag key="abilityPct1" value="40" />
       <Tag key="abilityPct2" value="80" />
@@ -22837,7 +22839,7 @@
     </EntityDescriptor>
     <EntityDescriptor id="Specimen_DE_14" movable="true" storable="true" category="specimen" sizeX="0.01" sizeY="0.01">
       <State id="default" spriteId="specimen_DE_14_stand" sellPrice="20000" />
-      <Tag key="spX100" value="265" />
+      <Tag key="spX100" value="260" />
       <Tag key="odds" value="0" />
       <Tag key="dna" value="DE" />
       <Tag key="lifePoint" value="4666" />
@@ -23080,16 +23082,16 @@
     </EntityDescriptor>
     <EntityDescriptor id="Specimen_FA_14" movable="true" storable="true" category="specimen" sizeX="0.01" sizeY="0.01">
       <State id="default" spriteId="specimen_FA_14_stand" sellPrice="20000" />
-      <Tag key="spX100" value="200" />
-      <Tag key="odds" value="0" />
+      <Tag key="spX100" value="185" />
+      <Tag key="odds" value="20" />
       <Tag key="dna" value="FA" />
-      <Tag key="lifePoint" value="1130" />
+      <Tag key="lifePoint" value="1420" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
-      <Tag key="atk1" value="312" />
-      <Tag key="atk1p" value="468:AOE" />
-      <Tag key="atk2" value="312" />
-      <Tag key="atk2p" value="468:AOE" />
+      <Tag key="atk1" value="1451" />
+      <Tag key="atk1p" value="1451:AOE" />
+      <Tag key="atk2" value="1451" />
+      <Tag key="atk2p" value="1451:AOE" />
       <Tag key="bank" value="42" />
       <Tag key="unlockAttack" value="1:1:f;2:5:a;2p:15:a;1p:10:f" />
       <Tag key="type" value="LEGEND" />
@@ -23098,11 +23100,10 @@
       <Tag key="changePrice02" value="99999999" />
       <Tag key="changePrice03" value="99999999" />
       <Tag key="recipes" value="FA_14x[A-F][A-F]_*+FA_14x[A-F]_*" />
-      <Tag key="abilities" value="1:ability_weaken;2:ability_weaken_plus" />
-      <Tag key="abilityPct1" value="-20" />
-      <Tag key="abilityPct2" value="-30" />
+      <Tag key="abilities" value="1:ability_shield;2:ability_shield_plus" />
+      <Tag key="abilityPct1" value="16" />
+      <Tag key="abilityPct2" value="32" />
       <Tag key="orbSlots" value="n;n;s" />
-      <Tag key="PNJ" value="true" />
       <CustomScript name="onPlaceOver">
         <Script cmd="PlaceSpecimen">
           <Param>Specimen_F_A</Param>
@@ -23232,7 +23233,7 @@
       <Tag key="spX100" value="275" />
       <Tag key="odds" value="0" />
       <Tag key="dna" value="FF" />
-      <Tag key="lifePoint" value="4776" />
+      <Tag key="lifePoint" value="1130" />
       <Tag key="incubMin" value="60" />
       <Tag key="specimen" value="true" />
       <Tag key="atk1" value="814" />
