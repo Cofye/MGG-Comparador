@@ -9,6 +9,8 @@ let namesLoaded = false;
 let loadingNames = false;
 let gachaLoaded = false;
 
+const STAT_ORDER = ['life', 'speed', 'atk1', 'atk1p', 'atk2', 'atk2p', 'ability1', 'ability2', 'bank'];
+
 // --- Carga de nombres (con caché) ---
 async function loadNames() {
   if (namesLoaded) return namesMap;
@@ -41,8 +43,8 @@ async function loadNames() {
 }
 
 // --- Renderizado principal ---
-export async function render(data) {
-  currentData = data;
+export async function render(entries) {
+  currentData = entries;
   const container = document.getElementById("table");
 
   if (!container.querySelector('.top-header')) {
@@ -68,14 +70,14 @@ export async function render(data) {
 
   const counterSpan = container.querySelector('#mutant-counter');
   if (counterSpan) {
-    counterSpan.textContent = data.length;
+    counterSpan.textContent = entries.length;
   }
 
   container.querySelectorAll('.row').forEach(el => el.remove());
 
-  data.forEach(entry => {
+  entries.forEach(entry => {
     const row = document.createElement("div");
-    const id = entry.new.id;
+    const id = entry.id;
     row.className = "row";
     row.dataset.id = id;
 
@@ -83,6 +85,7 @@ export async function render(data) {
     row.appendChild(createStats(entry.old, id));
     row.appendChild(createStats(entry.new, id, entry.old));
     row.appendChild(createDiffScaled(entry.old, entry.new, id));
+    row.appendChild(createAlertsColumn(entry.old, entry.announced, entry.new, id));
 
     container.appendChild(row);
   });
@@ -128,7 +131,9 @@ function createHeaderRow() {
   col3.textContent = "Después";
   const col4 = document.createElement("div");
   col4.textContent = "Cambio";
-  headerRow.append(col1, col2, col3, col4);
+  const col5 = document.createElement("div");
+  col5.textContent = "";
+  headerRow.append(col1, col2, col3, col4, col5);
   return headerRow;
 }
 
@@ -168,28 +173,12 @@ export function toggleCalculatedMode() {
   refreshAllRows();
 }
 
-function refreshAllRows() {
-  currentData.forEach(entry => {
-    const id = entry.new.id;
-    const row = document.querySelector(`.row[data-id="${id}"]`);
-    if (!row) return;
-    const newBefore = createStats(entry.old, id);
-    const newAfter = createStats(entry.new, id, entry.old);
-    const newDiff = createDiffScaled(entry.old, entry.new, id);
-    const children = row.children;
-    if (children.length >= 4) {
-      children[1].replaceWith(newBefore);
-      children[2].replaceWith(newAfter);
-      children[3].replaceWith(newDiff);
-    }
-  });
-}
-
 function updateRow(id) {
   const row = document.querySelector(`.row[data-id="${id}"]`);
   if (!row) return;
-  const entry = currentData.find(e => e.new.id === id);
+  const entry = currentData.find(e => e.id === id);
   if (!entry) return;
+
   const newRow = document.createElement("div");
   newRow.className = "row";
   newRow.dataset.id = id;
@@ -197,7 +186,61 @@ function updateRow(id) {
   newRow.appendChild(createStats(entry.old, id));
   newRow.appendChild(createStats(entry.new, id, entry.old));
   newRow.appendChild(createDiffScaled(entry.old, entry.new, id));
+  newRow.appendChild(createAlertsColumn(entry.old, entry.announced, entry.new, id));
   row.replaceWith(newRow);
+}
+
+function refreshAllRows() {
+  currentData.forEach(entry => updateRow(entry.id));
+}
+
+// --- Alertas ---
+function createAlertsColumn(oldData, announcedData, newData, id) {
+  const div = document.createElement("div");
+
+  const oldStats = oldData ? getFinalStats(oldData, id) : null;
+  const announcedStats = announcedData ? getFinalStats(announcedData, id) : null;
+  const newStats = getFinalStats(newData, id);
+
+  STAT_ORDER.forEach(key => {
+    const row = document.createElement("div");
+    row.className = "stat-row alert-row";
+
+    const oldVal = oldStats ? oldStats[key] : null;
+    const announcedVal = announcedStats ? announcedStats[key] : null;
+    const newVal = newStats ? newStats[key] : null;
+
+    let alertMsg = null;
+
+    if (announcedVal !== null) {
+      if (announcedVal === oldVal && newVal !== oldVal) {
+        alertMsg = `Este cambio no estaba anunciado`;
+      } else if (announcedVal !== oldVal && newVal === oldVal) {
+        alertMsg = `No llegó el cambio anunciado de ${formatAlertValue(announcedVal, key)}`;
+      } else if (announcedVal !== oldVal && newVal !== oldVal && announcedVal !== newVal) {
+        alertMsg = `Se anunció un cambio de ${formatAlertValue(announcedVal, key)}`;
+      }
+    }
+
+    if (alertMsg) {
+      const icon = document.createElement("img");
+      icon.src = "img/alert.png";
+      icon.className = "alert-icon";
+      icon.title = alertMsg;
+      row.appendChild(icon);
+    }
+
+    div.appendChild(row);
+  });
+
+  return div;
+}
+
+function formatAlertValue(val, key) {
+  if (key === 'speed') return val.toFixed(2);
+  if (key.startsWith('ability')) return val + '%';
+  if (key === 'bank') return val;
+  return Math.floor(val);
 }
 
 // --- Multiplicadores ---
@@ -246,13 +289,11 @@ function createColumnInfo(data, name) {
   const activeMode = modeMap[data.id];
 
   if (activeMode) {
-    // Estrellas
     if (activeMode === "gold") url = base + "_gold.png";
     else if (activeMode === "platinum") url = base + "_platinum.png";
     else if (activeMode === "bronze") url = base + "_bronze.png";
     else if (activeMode === "silver") url = base + "_silver.png";
     else {
-      // Si no es estrella, asumimos que es un Gacha (el modo es el gachaId)
       const gachaList = gachaMap[data.id];
       if (gachaList && gachaList.some(g => g.gachaId === activeMode)) {
         url = base + `_${activeMode}.png`;
@@ -269,14 +310,12 @@ function createColumnInfo(data, name) {
   const btnContainer = document.createElement("div");
   btnContainer.className = "btn-container";
 
-  // Botones de estrella
   const btnBronze = createButton("bronze", data.id);
   const btnSilver = createButton("silver", data.id);
   const btnGold = createButton("gold", data.id);
   const btnPlat = createButton("platinum", data.id);
   btnContainer.append(btnBronze, btnSilver, btnGold, btnPlat);
 
-  // Botones de Gacha (uno por cada skin)
   const gachaList = gachaMap[data.id];
   if (gachaList && gachaList.length > 0) {
     gachaList.forEach(g => {
@@ -353,6 +392,8 @@ function createStats(data, id, oldData = null) {
 
   return div;
 }
+
+// ... (resto de funciones sin cambios, addStat, addAttack, createAttackIcon, addAbility, createAbilityIcon, createDiffScaled, getFinalStats, addDiff, loadGachas, getStarBonus)
 
 function addStat(parent, iconName, label, value, oldValue = null, statType = '', isSpeed = false) {
   const row = document.createElement("div");

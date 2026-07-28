@@ -2,7 +2,9 @@ export function parseXML(xmlString) {
   const parser = new DOMParser();
   const xml = parser.parseFromString(xmlString, "text/xml");
 
-  const entities = [...xml.getElementsByTagName("EntityDescriptor")];
+  // Solo entidades que sean mutantes (id empieza por "Specimen_")
+  const entities = [...xml.getElementsByTagName("EntityDescriptor")]
+    .filter(e => e.getAttribute("id")?.startsWith("Specimen_"));
 
   return entities.map(e => {
     const id = e.getAttribute("id");
