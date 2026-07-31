@@ -3,55 +3,130 @@ import { calcRealDamage } from './utils.js?v=2';
 
 let modeMap = {};
 let currentData = [];
+let currentUpdatedCount = 0;
 let namesMap = {};
-let calculatedMode = true;
+let calculatedMode = false;
 let namesLoaded = false;
-let loadingNames = false;
 let gachaLoaded = false;
+let langMap = {};
+let currentLang = 'es';
+let langLoaded = false;
+let topHeaderEl = null;
+let headerRowEl = null;
+let langCache = {};
+let namesCache = {}; // { es: {id: name}, en: {id: name} }
 
 const STAT_ORDER = ['life', 'speed', 'atk1', 'atk1p', 'atk2', 'atk2p', 'ability1', 'ability2', 'bank'];
 
-// --- Carga de nombres (con caché) ---
-async function loadNames() {
-  if (namesLoaded) return namesMap;
-  if (loadingNames) {
-    while (loadingNames) await new Promise(resolve => setTimeout(resolve, 50));
-    return namesMap;
+// --- Precarga de archivos de idioma de la interfaz ---
+export async function preloadLangFiles() {
+  const files = ['es', 'en'];
+  for (const lang of files) {
+    if (!langCache[lang]) {
+      const map = await loadLangFile(lang);
+      if (map) langCache[lang] = map;
+    }
   }
-  loadingNames = true;
+  // Establecer el idioma por defecto (es)
+  if (langCache['es']) {
+    langMap = langCache['es'];
+    langLoaded = true;
+    currentLang = 'es';
+  }
+}
+
+// --- Precarga de nombres de mutantes para ambos idiomas ---
+export async function preloadNames() {
+  const langs = ['es', 'en'];
+  for (const lang of langs) {
+    if (!namesCache[lang]) {
+      try {
+        const url = `https://s-beta.kobojo.com/mutants/gameconfig/localisation_${lang}.txt?t=${Date.now()}`;
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const txt = await response.text();
+        const map = {};
+        txt.split("\n").forEach(line => {
+          const [id, name] = line.split(";");
+          if (id && name) map[id] = name.trim();
+        });
+        namesCache[lang] = map;
+        console.log(`✅ Nombres precargados (${lang}): ${Object.keys(map).length} entradas`);
+      } catch (error) {
+        console.error(`❌ Error al precargar localisation_${lang}.txt:`, error);
+        namesCache[lang] = {};
+      }
+    }
+  }
+  // Asignar el idioma actual (es) por defecto
+  namesMap = namesCache['es'] || {};
+  namesLoaded = true;
+}
+
+// --- Carga de archivo de idioma (usado para precarga) ---
+async function loadLangFile(lang) {
   try {
-    const url = `https://s-beta.kobojo.com/mutants/gameconfig/localisation_es.txt?t=${Date.now()}`;
+    const url = `./lang/${lang}.txt?t=${Date.now()}`;
     const response = await fetch(url);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const txt = await response.text();
     const map = {};
     txt.split("\n").forEach(line => {
-      const [id, name] = line.split(";");
-      if (id && name) map[id] = name.trim();
+      const [key, ...valueParts] = line.split("=");
+      if (key && valueParts.length > 0) {
+        map[key.trim()] = valueParts.join("=").trim();
+      }
     });
-    namesMap = map;
-    namesLoaded = true;
-    console.log(`✅ Nombres cargados: ${Object.keys(map).length} entradas`);
+    return map;
   } catch (error) {
-    console.error("❌ Error al cargar localisation_es.txt:", error);
-    namesMap = {};
-    namesLoaded = true;
-  } finally {
-    loadingNames = false;
+    console.error(`Error loading language file ${lang}:`, error);
+    return null;
   }
-  return namesMap;
 }
 
 // --- Renderizado principal ---
 export async function render(entries, updatedCount) {
   currentData = entries;
+  currentUpdatedCount = updatedCount || 0;
   const container = document.getElementById("table");
 
+  // Asegurar que langMap esté cargado (ya debería estarlo por preloadLangFiles)
+  if (!langLoaded) {
+    if (langCache['es']) {
+      langMap = langCache['es'];
+      langLoaded = true;
+      currentLang = 'es';
+    } else {
+      // Fallback: cargar ahora
+      const map = await loadLangFile('es');
+      if (map) {
+        langCache['es'] = map;
+        langMap = map;
+        langLoaded = true;
+        currentLang = 'es';
+      }
+    }
+  }
+
+  // Actualizar título
+  const titleElement = document.getElementById("title");
+  if (titleElement) {
+    const titleTemplate = langMap.title || "🧪 {count} mutantes relevantes";
+    titleElement.textContent = titleTemplate.replace('{count}', entries.length);
+  }
+
+  // Crear top-header si no existe, o actualizar referencias
   if (!container.querySelector('.top-header')) {
     container.appendChild(createTopHeader('Cargando datos...'));
+    topHeaderEl = container.querySelector('.top-header');
+  } else {
+    topHeaderEl = container.querySelector('.top-header');
+    updateTopHeaderTexts();
   }
+
   if (!container.querySelector('.header-row')) {
     container.appendChild(createHeaderRow());
+    headerRowEl = container.querySelector('.header-row');
     requestAnimationFrame(() => {
       const topHeader = container.querySelector('.top-header');
       const headerRow = container.querySelector('.header-row');
@@ -59,18 +134,18 @@ export async function render(entries, updatedCount) {
         headerRow.style.top = topHeader.offsetHeight + 'px';
       }
     });
+  } else {
+    headerRowEl = container.querySelector('.header-row');
+    updateHeaderRowTexts();
   }
 
   if (!gachaLoaded) {
     await loadGachas();
   }
-  if (!namesLoaded) {
-    await loadNames();
-  }
 
   const counterSpan = container.querySelector('#mutant-counter');
   if (counterSpan) {
-    counterSpan.textContent = updatedCount; // solo los que cambiaron realmente
+    counterSpan.textContent = currentUpdatedCount;
   }
 
   container.querySelectorAll('.row').forEach(el => el.remove());
@@ -93,6 +168,97 @@ export async function render(entries, updatedCount) {
   setupHighlightEvents(container);
 }
 
+function updateTopHeaderTexts() {
+  if (!topHeaderEl) return;
+  const counterSpan = topHeaderEl.querySelector('.counter');
+  if (counterSpan) {
+    const updatedText = langMap.updated || '🧬 Mutantes actualizados:';
+    const counterValue = counterSpan.querySelector('#mutant-counter');
+    if (counterValue) {
+      counterSpan.innerHTML = `${updatedText} <span id="mutant-counter">${counterValue.textContent}</span>`;
+    }
+  }
+  const legendSpan = topHeaderEl.querySelector('.legend');
+  if (legendSpan) {
+    legendSpan.innerHTML = `
+      <span class="red">🔴 ${langMap.legend_nerf || 'NERF'}</span>
+      <span class="green">🟢 ${langMap.legend_buff || 'BUFF'}</span>
+      <span class="changed">🟣 ${langMap.legend_rework || 'REWORK'}</span>
+    `;
+  }
+  const toggleBtn = topHeaderEl.querySelector('#toggle-calculated-btn');
+  if (toggleBtn) {
+    toggleBtn.textContent = langMap.toggle_calculated || "Estadísticas calculadas";
+  }
+  updateLangButtons(currentLang);
+}
+
+function updateHeaderRowTexts() {
+  if (!headerRowEl) return;
+  const cols = headerRowEl.querySelectorAll('div');
+  if (cols.length >= 5) {
+    cols[0].textContent = langMap.col_mutant || "Mutante";
+    cols[1].textContent = langMap.col_before || "Antes";
+    cols[2].textContent = langMap.col_after || "Después";
+    cols[3].textContent = langMap.col_change || "Cambio";
+    cols[4].textContent = langMap.col_alerts || "Alertas";
+  }
+}
+
+function updateLangButtons(lang) {
+  const btns = document.querySelectorAll('.lang-btn');
+  btns.forEach(btn => {
+    if (btn.dataset.lang === lang) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+}
+
+// --- Cambiar idioma (rápido, sin fetch) ---
+export async function setLanguage(lang) {
+  if (lang === currentLang) return;
+
+  // 1. Cambiar idioma de la interfaz
+  if (langCache[lang]) {
+    langMap = langCache[lang];
+    currentLang = lang;
+  } else {
+    // Fallback (no debería ocurrir porque precargamos)
+    const map = await loadLangFile(lang);
+    if (map) {
+      langCache[lang] = map;
+      langMap = map;
+      currentLang = lang;
+    } else {
+      // Si falla, mantener el actual
+      return;
+    }
+  }
+
+  // 2. Cambiar mapa de nombres (usando caché precargado)
+  if (namesCache[lang]) {
+    namesMap = namesCache[lang];
+  } else {
+    // Fallback (no debería ocurrir)
+    namesMap = {};
+  }
+
+  // 3. Actualizar interfaz sin re-renderizar toda la tabla
+  //    (pero como las estadísticas dependen del idioma, re-renderizamos con los mismos datos)
+  if (currentData.length > 0) {
+    // Actualizar título y textos antes de re-renderizar
+    const titleElement = document.getElementById("title");
+    if (titleElement) {
+      const titleTemplate = langMap.title || "🧪 {count} mutantes relevantes";
+      titleElement.textContent = titleTemplate.replace('{count}', currentData.length);
+    }
+    // Re-renderizar (rápido porque todo está en memoria)
+    render(currentData, currentUpdatedCount);
+  }
+}
+
 // --- Top header ---
 function createTopHeader(initialText = 'Cargando datos...') {
   const topHeader = document.createElement("div");
@@ -100,39 +266,94 @@ function createTopHeader(initialText = 'Cargando datos...') {
 
   const counterSpan = document.createElement("div");
   counterSpan.className = "counter";
-  counterSpan.innerHTML = `🧬 Mutantes actualizados: <span id="mutant-counter">${initialText}</span>`;
+  const updatedText = langMap.updated || '🧬 Mutantes actualizados:';
+  counterSpan.innerHTML = `${updatedText} <span id="mutant-counter">${initialText}</span>`;
 
   const legendSpan = document.createElement("div");
   legendSpan.className = "legend";
   legendSpan.innerHTML = `
-    <span class="red">🔴 NERF</span>
-    <span class="green">🟢 BUFF</span>
-    <span class="changed">🟣 REWORK</span>
+    <span class="red">🔴 ${langMap.legend_nerf || 'NERF'}</span>
+    <span class="green">🟢 ${langMap.legend_buff || 'BUFF'}</span>
+    <span class="changed">🟣 ${langMap.legend_rework || 'REWORK'}</span>
   `;
 
   const toggleBtn = document.createElement("button");
   toggleBtn.id = "toggle-calculated-btn";
-  toggleBtn.textContent = "Estadísticas calculadas";
+  toggleBtn.textContent = langMap.toggle_calculated || "Estadísticas calculadas";
   toggleBtn.className = "toggle-btn" + (calculatedMode ? " active" : "");
   toggleBtn.onclick = toggleCalculatedMode;
 
-  topHeader.append(counterSpan, legendSpan, toggleBtn);
+  const langBtnContainer = document.createElement("div");
+  langBtnContainer.className = "lang-buttons";
+  
+  const btnEs = document.createElement("button");
+  btnEs.textContent = "ES";
+  btnEs.className = "lang-btn" + (currentLang === 'es' ? " active" : "");
+  btnEs.dataset.lang = "es";
+  btnEs.onclick = () => setLanguage('es');
+
+  const btnEn = document.createElement("button");
+  btnEn.textContent = "EN";
+  btnEn.className = "lang-btn" + (currentLang === 'en' ? " active" : "");
+  btnEn.dataset.lang = "en";
+  btnEn.onclick = () => setLanguage('en');
+
+  langBtnContainer.append(btnEs, btnEn);
+  topHeader.append(counterSpan, legendSpan, toggleBtn, langBtnContainer);
   return topHeader;
+}
+
+
+
+
+
+
+// --- Carga de nombres (con caché por idioma) ---
+async function loadNames() {
+  if (namesLoaded && namesLang === currentLang) return namesMap;
+  if (loadingNames) {
+    while (loadingNames) await new Promise(resolve => setTimeout(resolve, 50));
+    return namesMap;
+  }
+  loadingNames = true;
+  try {
+    const url = `https://s-beta.kobojo.com/mutants/gameconfig/localisation_${currentLang}.txt?t=${Date.now()}`;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const txt = await response.text();
+    const map = {};
+    txt.split("\n").forEach(line => {
+      const [id, name] = line.split(";");
+      if (id && name) map[id] = name.trim();
+    });
+    namesMap = map;
+    namesLoaded = true;
+    namesLang = currentLang;
+    console.log(`✅ Nombres cargados (${currentLang}): ${Object.keys(map).length} entradas`);
+  } catch (error) {
+    console.error(`❌ Error al cargar localisation_${currentLang}.txt:`, error);
+    namesMap = {};
+    namesLoaded = true;
+    namesLang = currentLang;
+  } finally {
+    loadingNames = false;
+  }
+  return namesMap;
 }
 
 function createHeaderRow() {
   const headerRow = document.createElement("div");
   headerRow.className = "header-row";
   const col1 = document.createElement("div");
-  col1.textContent = "Mutante";
+  col1.textContent = langMap.col_mutant || "Mutante";
   const col2 = document.createElement("div");
-  col2.textContent = "Antes";
+  col2.textContent = langMap.col_before || "Antes";
   const col3 = document.createElement("div");
-  col3.textContent = "Después";
+  col3.textContent = langMap.col_after || "Después";
   const col4 = document.createElement("div");
-  col4.textContent = "Cambio";
+  col4.textContent = langMap.col_change || "Cambio";
   const col5 = document.createElement("div");
-  col5.textContent = "";
+  col5.textContent = langMap.col_alerts || "Alertas";
   headerRow.append(col1, col2, col3, col4, col5);
   return headerRow;
 }
@@ -214,11 +435,15 @@ function createAlertsColumn(oldData, announcedData, newData, id) {
 
     if (announcedVal !== null) {
       if (announcedVal === oldVal && newVal !== oldVal) {
-        alertMsg = `Este cambio no estaba anunciado`;
+        alertMsg = langMap.alert_unannounced || "Este cambio no estaba anunciado";
       } else if (announcedVal !== oldVal && newVal === oldVal) {
-        alertMsg = `No llegó el cambio anunciado de ${formatAlertValue(announcedVal, key)}`;
+        const template = langMap.alert_not_arrived || "No llegó el cambio anunciado de {value}";
+        alertMsg = template.replace('{value}', formatAlertValue(announcedVal, key));
       } else if (announcedVal !== oldVal && newVal !== oldVal && announcedVal !== newVal) {
-        alertMsg = `Se anunció un cambio de ${formatAlertValue(announcedVal, key)}`;
+        const template = langMap.alert_announced_diff || "Se anunció un cambio de {announced} pero el cambio real es {real}";
+        alertMsg = template
+          .replace('{announced}', formatAlertValue(announcedVal, key))
+          .replace('{real}', formatAlertValue(newVal, key));
       }
     }
 
@@ -370,30 +595,28 @@ function createStats(data, id, oldData = null) {
   const div = document.createElement("div");
   const mult = getMultipliers(id);
 
-  addStat(div, "life.png", "Vida", data.life * mult.life, oldData ? oldData.life * mult.life : null, 'life');
-  addStat(div, "speed.png", "Velocidad", data.speed, oldData?.speed, 'speed', true);
+  addStat(div, "life.png", langMap.stat_life || "Vida", data.life * mult.life, oldData ? oldData.life * mult.life : null, 'life');
+  addStat(div, "speed.png", langMap.stat_speed || "Velocidad", data.speed, oldData?.speed, 'speed', true);
 
-  addAttack(div, "Ataque 1", data.atk1, data.unlock["1"], mult.atk,
+  addAttack(div, langMap.stat_attack1 || "Ataque 1", data.atk1, data.unlock["1"], mult.atk,
     oldData ? getAttackValue(oldData.atk1, false, mult.atk) : null, false, 'atk1',
     oldData ? oldData.atk1 : null, oldData ? oldData.unlock["1"] : null);
-  addAttack(div, "Ataque 1+", data.atk1p, data.unlock["1p"], mult.atk,
+  addAttack(div, langMap.stat_attack1p || "Ataque 1+", data.atk1p, data.unlock["1p"], mult.atk,
     oldData ? getAttackValue(oldData.atk1p, true, mult.atk) : null, true, 'atk1p',
     oldData ? oldData.atk1p : null, oldData ? oldData.unlock["1p"] : null);
-  addAttack(div, "Ataque 2", data.atk2, data.unlock["2"], mult.atk,
+  addAttack(div, langMap.stat_attack2 || "Ataque 2", data.atk2, data.unlock["2"], mult.atk,
     oldData ? getAttackValue(oldData.atk2, false, mult.atk) : null, false, 'atk2',
     oldData ? oldData.atk2 : null, oldData ? oldData.unlock["2"] : null);
-  addAttack(div, "Ataque 2+", data.atk2p, data.unlock["2p"], mult.atk,
+  addAttack(div, langMap.stat_attack2p || "Ataque 2+", data.atk2p, data.unlock["2p"], mult.atk,
     oldData ? getAttackValue(oldData.atk2p, true, mult.atk) : null, true, 'atk2p',
     oldData ? oldData.atk2p : null, oldData ? oldData.unlock["2p"] : null);
 
-  addAbility(div, "Habilidad", data.ability1, data.abilities.a1, oldData?.ability1, 'ability1', oldData ? oldData.abilities.a1 : null);
-  addAbility(div, "Habilidad+", data.ability2, data.abilities.a2, oldData?.ability2, 'ability2', oldData ? oldData.abilities.a2 : null);
-  addStat(div, "credits.png", "Créditos", data.bank, oldData ? oldData.bank : null, 'bank');
+  addAbility(div, langMap.stat_ability || "Habilidad", data.ability1, data.abilities.a1, oldData?.ability1, 'ability1', oldData ? oldData.abilities.a1 : null);
+  addAbility(div, langMap.stat_ability_plus || "Habilidad+", data.ability2, data.abilities.a2, oldData?.ability2, 'ability2', oldData ? oldData.abilities.a2 : null);
+  addStat(div, "credits.png", langMap.stat_credits || "Créditos", data.bank, oldData ? oldData.bank : null, 'bank');
 
   return div;
 }
-
-// ... (resto de funciones sin cambios, addStat, addAttack, createAttackIcon, addAbility, createAbilityIcon, createDiffScaled, getFinalStats, addDiff, loadGachas, getStarBonus)
 
 function addStat(parent, iconName, label, value, oldValue = null, statType = '', isSpeed = false) {
   const row = document.createElement("div");
@@ -443,8 +666,9 @@ function addAttack(parent, label, atk, gen, mod, oldAtkValue = null, isPlus = fa
   const icon = createAttackIcon(gen, atk);
   const value = getAttackValue(atk, isPlus, mod);
 
+  let labelText = label + (atk.aoe ? (langMap.triple || " Triple") : "");
   const labelSpan = document.createElement("span");
-  labelSpan.textContent = label + (atk.aoe ? " Triple" : "");
+  labelSpan.textContent = labelText;
   if (oldGen !== null && oldGen !== undefined && oldGen !== gen) {
     labelSpan.classList.add("changed");
   }
@@ -544,6 +768,7 @@ function createAbilityIcon(ability, isPlus) {
   return wrapper;
 }
 
+// --- Diferencias ---
 function createDiffScaled(oldD, newD, id) {
   const div = document.createElement("div");
   const oldStats = getFinalStats(oldD, id);
@@ -589,13 +814,11 @@ function addDiff(parent, oldVal, newVal, isAbility = false, isSpeed = false, sta
   let isPositive;
 
   if (isAbility) {
-    // Habilidades: comparación por potencia absoluta
     const absOld = Math.abs(oldVal);
     const absNew = Math.abs(newVal);
     diffValue = absNew - absOld;
     isPositive = diffValue > 0;
   } else {
-    // Stats normales: diferencia directa
     diffValue = newVal - oldVal;
     isPositive = diffValue > 0;
   }
@@ -607,7 +830,6 @@ function addDiff(parent, oldVal, newVal, isAbility = false, isSpeed = false, sta
     return;
   }
 
-  // --- Formateo de la diferencia numérica ---
   let displayDiff;
   if (isSpeed) {
     displayDiff = (diffValue > 0 ? '+' : '') + diffValue.toFixed(2);
@@ -615,30 +837,25 @@ function addDiff(parent, oldVal, newVal, isAbility = false, isSpeed = false, sta
     displayDiff = (diffValue > 0 ? '+' : '') + Math.floor(diffValue);
   }
 
-  // --- Calcular porcentaje solo para stats normales (no habilidades) ---
   let percentageText = '';
   if (!isAbility && oldVal !== 0) {
     const percent = ((newVal - oldVal) / oldVal) * 100;
     const sign = percent > 0 ? '+' : '';
-    const percentDisplay = percent.toFixed(1); // un decimal
+    const percentDisplay = percent.toFixed(1);
     percentageText = ` (${sign}${percentDisplay}%)`;
   }
 
-  // --- Construir el texto final ---
   let displayValue;
   if (isAbility) {
-    // Para habilidades: usar el formato existente (ej: "+5%")
     let absDiff = Math.abs(diffValue);
     let sign = isPositive ? '+' : '-';
     displayValue = `${sign}${absDiff}%`;
   } else {
-    // Para stats normales: diferencia + porcentaje
     displayValue = displayDiff + percentageText;
   }
 
   right.textContent = displayValue;
 
-  // Colores
   if (isPositive) right.classList.add("green");
   else right.classList.add("red");
 
@@ -646,7 +863,7 @@ function addDiff(parent, oldVal, newVal, isAbility = false, isSpeed = false, sta
   parent.appendChild(row);
 }
 
-
+// --- Gachas ---
 let gachaMap = {};
 
 async function loadGachas() {
@@ -667,9 +884,8 @@ async function loadGachas() {
         const stars = parseInt(spec.getAttribute("stars"), 10);
         const bonus = parseInt(spec.getAttribute("bonus"), 10);
         
-        // 🔥 FILTRO ESPECIAL PARA Specimen_FD_03
         if (specimenId === "Specimen_FD_03" && gachaId !== "japan") {
-          continue; // Ignorar este Gacha para este specimen
+          continue;
         }
 
         if (!gachaMap[specimenId]) gachaMap[specimenId] = [];
