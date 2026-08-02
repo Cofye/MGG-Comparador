@@ -298,6 +298,14 @@ function createTopHeader(initialText = 'Cargando datos...') {
   btnEn.dataset.lang = "en";
   btnEn.onclick = () => setLanguage('en');
 
+  const indicator = document.createElement("span");
+  indicator.id = "show-all-indicator";
+  indicator.style.display = "none";
+  indicator.style.marginLeft = "10px";
+  indicator.style.color = "#ffaa00";
+  indicator.textContent = "🔓 Modo completo";
+  topHeader.append(indicator);
+
   langBtnContainer.append(btnEs, btnEn);
   topHeader.append(counterSpan, legendSpan, toggleBtn, langBtnContainer);
   return topHeader;
@@ -898,6 +906,26 @@ async function loadGachas() {
   } finally {
     gachaLoaded = true;
   }
+}
+
+let showAllMutants = false;
+
+export function toggleShowAll(value) {
+  showAllMutants = value;
+  // Aquí podrías actualizar algún indicador visual, ej. un texto en el top-header
+  const indicator = document.getElementById('show-all-indicator');
+  if (indicator) {
+    if (showAllMutants) {
+      indicator.textContent = '🔓 Modo completo';
+      indicator.style.display = 'inline';
+    } else {
+      indicator.style.display = 'none';
+    }
+  }
+}
+
+export function isShowAll() {
+  return showAllMutants;
 }
 
 function getStarBonus(stars) {
