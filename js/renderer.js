@@ -517,7 +517,7 @@ function createColumnInfo(data, name) {
   const img = document.createElement("img");
   img.width = 80;
 
-  let base = `https://s-ak.kobojo.com/mutants/assets/thumbnails/${data.id.toLowerCase()}`;
+  let base = `https://s-beta.kobojo.com/mutants/assets/thumbnails/${data.id.toLowerCase()}`;
   let url = base + ".png";
   const activeMode = modeMap[data.id];
 
@@ -566,10 +566,10 @@ function createButton(type, id) {
   btn.className = "btn";
   const icon = document.createElement("img");
   let iconSrc;
-  if (type === "gold") iconSrc = "https://s-ak.kobojo.com/mutants/assets/mobile/thumbnails/star_gold.png";
-  else if (type === "platinum") iconSrc = "https://s-ak.kobojo.com/mutants/assets/mobile/thumbnails/star_platinum.png";
-  else if (type === "bronze") iconSrc = "https://s-ak.kobojo.com/mutants/assets/mobile/thumbnails/star_bronze.png";
-  else if (type === "silver") iconSrc = "https://s-ak.kobojo.com/mutants/assets/mobile/thumbnails/star_silver.png";
+  if (type === "gold") iconSrc = "https://s-beta.kobojo.com/mutants/assets/mobile/thumbnails/star_gold.png";
+  else if (type === "platinum") iconSrc = "https://s-beta.kobojo.com/mutants/assets/mobile/thumbnails/star_platinum.png";
+  else if (type === "bronze") iconSrc = "https://s-beta.kobojo.com/mutants/assets/mobile/thumbnails/star_bronze.png";
+  else if (type === "silver") iconSrc = "https://s-beta.kobojo.com/mutants/assets/mobile/thumbnails/star_silver.png";
   icon.src = iconSrc;
   icon.className = "btn-icon";
   btn.appendChild(icon);
@@ -586,7 +586,7 @@ function createGachaButton(gachaId, specimenId) {
   const btn = document.createElement("div");
   btn.className = "btn gacha-btn";
   const icon = document.createElement("img");
-  icon.src = `https://s-ak.kobojo.com/mutants/assets/gachacontent/icon_${gachaId}.png`;
+  icon.src = `https://s-beta.kobojo.com/mutants/assets/gachacontent/icon_${gachaId}.png`;
   icon.className = "btn-icon-gacha";
   btn.appendChild(icon);
   if (modeMap[specimenId] === gachaId) btn.classList.add("active");
