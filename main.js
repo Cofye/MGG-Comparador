@@ -1,6 +1,5 @@
 import { parseXML } from './js/parser.js?v=2';
-import { render, setLanguage, preloadLangFiles, preloadNames } from './js/renderer.js?v=2';
-import { toggleShowAll, isShowAll } from './js/renderer.js?v=2'; // Necesitamos exportar estas funciones
+import { render, setLanguage, preloadLangFiles, preloadNames, setModeChangeHandler } from './js/renderer.js?v=2';
 
 function hasChanges(o, n) {
   return JSON.stringify(o) !== JSON.stringify(n);
@@ -8,13 +7,24 @@ function hasChanges(o, n) {
 
 let entriesData = null;
 const title = document.getElementById("title");
-let showAllMutants = false;
+
+let currentMode = 'rebalance';
+let previousMode = 'rebalance';
 
 function updateProgress(message, percent) {
   title.textContent = `Cargando calculadora... ${percent}% - ${message}`;
 }
 
-// --- Detectar "manuellewe" ---
+setModeChangeHandler(() => {
+  if (currentMode === 'all') {
+    currentMode = previousMode;
+  } else {
+    previousMode = currentMode;
+    currentMode = currentMode === 'rebalance' ? 'new' : 'rebalance';
+  }
+  loadDataAndRender();
+});
+
 let typed = "";
 document.addEventListener('keydown', (e) => {
   if (e.key.length === 1 && e.key.match(/[a-z]/i)) {
@@ -24,9 +34,12 @@ document.addEventListener('keydown', (e) => {
     }
     if (typed === "manuellewe") {
       typed = "";
-      showAllMutants = !showAllMutants;
-      toggleShowAll(showAllMutants); // Notificar a renderer (opcional)
-      // Recargar datos
+      if (currentMode === 'all') {
+        currentMode = previousMode;
+      } else {
+        previousMode = currentMode;
+        currentMode = 'all';
+      }
       loadDataAndRender();
     }
   }
@@ -34,9 +47,10 @@ document.addEventListener('keydown', (e) => {
 
 async function loadData() {
   updateProgress("Descargando archivos XML", 50);
-  const [oldXML, announcedXML, newXML] = await Promise.all([
+  const [oldXML, announcedXML, newXML, baseXML] = await Promise.all([
     fetch(`./data/gamedefinitions_old.xml?t=${Date.now()}`).then(r => r.text()),
     fetch(`./data/gamedefinitions_announcements.xml?t=${Date.now()}`).then(r => r.text()),
+    fetch(`./data/gamedefinitions_new.xml?t=${Date.now()}`).then(r => r.text()),
     fetch(`./data/gamedefinitions.xml?t=${Date.now()}`).then(r => r.text())
   ]);
 
@@ -44,35 +58,57 @@ async function loadData() {
   const oldData = parseXML(oldXML);
   const announcedData = parseXML(announcedXML);
   const newData = parseXML(newXML);
+  const baseData = parseXML(baseXML);
 
   updateProgress("Comparando datos", 70);
   const oldMap = Object.fromEntries(oldData.map(x => [x.id, x]));
   const announcedMap = Object.fromEntries(announcedData.map(x => [x.id, x]));
   const newMap = Object.fromEntries(newData.map(x => [x.id, x]));
+  const baseMap = Object.fromEntries(baseData.map(x => [x.id, x]));
 
-  const allIds = new Set([...Object.keys(newMap), ...Object.keys(announcedMap)]);
   const entries = [];
   let updatedCount = 0;
 
-  for (const id of allIds) {
-    const old = oldMap[id] || null;
-    const announced = announcedMap[id] || null;
-    const current = newMap[id] || null;
-    if (!current) continue;
+  if (currentMode === 'rebalance') {
+    const allIds = new Set([...Object.keys(newMap), ...Object.keys(announcedMap)]);
+    for (const id of allIds) {
+      const old = oldMap[id] || null;
+      const announced = announcedMap[id] || null;
+      const current = newMap[id] || null;
+      if (!current) continue;
 
-    const hasRealChange = old && hasChanges(old, current);
-    const hasAnnouncedChange = announced && old && hasChanges(old, announced);
+      const hasRealChange = old && hasChanges(old, current);
+      const hasAnnouncedChange = announced && old && hasChanges(old, announced);
 
-    // Si el modo completo está activo, mostrar todos los mutantes
-    if (showAllMutants) {
-      entries.push({ id, old, announced, new: current });
-      if (hasRealChange) updatedCount++;
-    } else {
-      // Filtro normal: solo los que cambiaron o tienen anuncio
       if (hasRealChange || hasAnnouncedChange) {
         entries.push({ id, old, announced, new: current });
         if (hasRealChange) updatedCount++;
       }
+    }
+  } else if (currentMode === 'new') {
+    for (const id of Object.keys(baseMap)) {
+      const current = baseMap[id];
+      const newVersion = newMap[id];
+      const old = oldMap[id] || null;
+      const announced = announcedMap[id] || null;
+
+      if (!current) continue;
+
+      const isNew = !newVersion || hasChanges(newVersion, current);
+      if (isNew) {
+        entries.push({ id, old, announced, new: current });
+        updatedCount++;
+      }
+    }
+  } else {
+    for (const id of Object.keys(baseMap)) {
+      const current = baseMap[id];
+      const old = oldMap[id] || null;
+      const announced = announcedMap[id] || null;
+      if (!current) continue;
+
+      entries.push({ id, old, announced, new: current });
+      updatedCount++;
     }
   }
 
@@ -82,24 +118,20 @@ async function loadData() {
 
 async function loadDataAndRender() {
   await loadData();
-  await setLanguage('es');
-  render(entriesData.entries, entriesData.updatedCount);
+  render(entriesData.entries, entriesData.updatedCount, currentMode);
 }
 
 async function init() {
-  // Precarga de idiomas y nombres
   updateProgress("Cargando idiomas", 10);
   await preloadLangFiles();
+
   updateProgress("Cargando nombres de mutantes", 30);
   await preloadNames();
 
-  // Carga de datos
   await loadData();
 
-  // Renderizar
   updateProgress("Preparando vista", 90);
-  await setLanguage('es');
-  render(entriesData.entries, entriesData.updatedCount);
+  render(entriesData.entries, entriesData.updatedCount, currentMode);
 }
 
 init();

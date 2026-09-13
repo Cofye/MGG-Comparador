@@ -341,3 +341,13 @@ img.icon,
   opacity: 0.6;
   cursor: wait;
 }
+
+.mode-btn { background: #2a5a8a; }
+.mode-btn:hover { background: #3a7ab0; }
+
+/* Indicador de modo completo (easter egg) */
+#show-all-indicator {
+  display: none;
+  margin-left: 10px;
+  color: #ffaa00;
+}

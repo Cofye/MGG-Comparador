@@ -1,4 +1,3 @@
-import { getDiff } from './utils.js?v=2';
 import { calcRealDamage } from './utils.js?v=2';
 
 let modeMap = {};
@@ -14,11 +13,37 @@ let langLoaded = false;
 let topHeaderEl = null;
 let headerRowEl = null;
 let langCache = {};
-let namesCache = {}; // { es: {id: name}, en: {id: name} }
+let namesCache = {};
+let currentMode = 'rebalance';
+let onModeChange = null;
 
 const STAT_ORDER = ['life', 'speed', 'atk1', 'atk1p', 'atk2', 'atk2p', 'ability1', 'ability2', 'bank'];
 
-// --- Precarga de archivos de idioma de la interfaz ---
+export function setModeChangeHandler(handler) {
+  onModeChange = handler;
+}
+
+function getCounterLabel() {
+  if (currentMode === 'new') return langMap.updated_new || '';
+  if (currentMode === 'all') return langMap.updated_all || '';
+  return langMap.updated || '';
+}
+
+function updateTitle(count) {
+  const titleElement = document.getElementById("title");
+  if (!titleElement) return;
+  const template = currentMode === 'all'
+    ? (langMap.show_all_indicator || '')
+    : (langMap.title || '');
+  titleElement.textContent = template.replace('{count}', count);
+}
+
+function getModeButtonText() {
+  if (currentMode === 'rebalance') return langMap.mode_rebalance || '';
+  if (currentMode === 'new') return langMap.mode_new || '';
+  return langMap.mode_all || '';
+}
+
 export async function preloadLangFiles() {
   const files = ['es', 'en'];
   for (const lang of files) {
@@ -27,7 +52,6 @@ export async function preloadLangFiles() {
       if (map) langCache[lang] = map;
     }
   }
-  // Establecer el idioma por defecto (es)
   if (langCache['es']) {
     langMap = langCache['es'];
     langLoaded = true;
@@ -35,7 +59,6 @@ export async function preloadLangFiles() {
   }
 }
 
-// --- Precarga de nombres de mutantes para ambos idiomas ---
 export async function preloadNames() {
   const langs = ['es', 'en'];
   for (const lang of langs) {
@@ -51,19 +74,15 @@ export async function preloadNames() {
           if (id && name) map[id] = name.trim();
         });
         namesCache[lang] = map;
-        console.log(`✅ Nombres precargados (${lang}): ${Object.keys(map).length} entradas`);
       } catch (error) {
-        console.error(`❌ Error al precargar localisation_${lang}.txt:`, error);
         namesCache[lang] = {};
       }
     }
   }
-  // Asignar el idioma actual (es) por defecto
   namesMap = namesCache['es'] || {};
   namesLoaded = true;
 }
 
-// --- Carga de archivo de idioma (usado para precarga) ---
 async function loadLangFile(lang) {
   try {
     const url = `./lang/${lang}.txt?t=${Date.now()}`;
@@ -79,25 +98,25 @@ async function loadLangFile(lang) {
     });
     return map;
   } catch (error) {
-    console.error(`Error loading language file ${lang}:`, error);
     return null;
   }
 }
 
-// --- Renderizado principal ---
-export async function render(entries, updatedCount) {
+export async function render(entries, updatedCount, mode = 'rebalance') {
+  currentMode = mode;
   currentData = entries;
   currentUpdatedCount = updatedCount || 0;
   const container = document.getElementById("table");
+  if (!container) return;
 
-  // Asegurar que langMap esté cargado (ya debería estarlo por preloadLangFiles)
+  container.className = `mode-${currentMode}`;
+
   if (!langLoaded) {
     if (langCache['es']) {
       langMap = langCache['es'];
       langLoaded = true;
       currentLang = 'es';
     } else {
-      // Fallback: cargar ahora
       const map = await loadLangFile('es');
       if (map) {
         langCache['es'] = map;
@@ -108,44 +127,35 @@ export async function render(entries, updatedCount) {
     }
   }
 
-  // Actualizar título
-  const titleElement = document.getElementById("title");
-  if (titleElement) {
-    const titleTemplate = langMap.title || "🧪 {count} mutantes relevantes";
-    titleElement.textContent = titleTemplate.replace('{count}', entries.length);
-  }
+  updateTitle(entries.length);
 
-  // Crear top-header si no existe, o actualizar referencias
   if (!container.querySelector('.top-header')) {
-    container.appendChild(createTopHeader('Cargando datos...'));
+    container.appendChild(createTopHeader('0'));
     topHeaderEl = container.querySelector('.top-header');
   } else {
     topHeaderEl = container.querySelector('.top-header');
     updateTopHeaderTexts();
   }
 
-  if (!container.querySelector('.header-row')) {
-    container.appendChild(createHeaderRow());
-    headerRowEl = container.querySelector('.header-row');
-    requestAnimationFrame(() => {
-      const topHeader = container.querySelector('.top-header');
-      const headerRow = container.querySelector('.header-row');
-      if (topHeader && headerRow) {
-        headerRow.style.top = topHeader.offsetHeight + 'px';
-      }
-    });
-  } else {
-    headerRowEl = container.querySelector('.header-row');
-    updateHeaderRowTexts();
-  }
+  const oldHeader = container.querySelector('.header-row');
+  if (oldHeader) oldHeader.remove();
+  container.appendChild(createHeaderRow());
+  headerRowEl = container.querySelector('.header-row');
+  requestAnimationFrame(() => {
+    const topHeader = container.querySelector('.top-header');
+    const headerRow = container.querySelector('.header-row');
+    if (topHeader && headerRow) {
+      headerRow.style.top = topHeader.offsetHeight + 'px';
+    }
+  });
 
   if (!gachaLoaded) {
     await loadGachas();
   }
 
-  const counterSpan = container.querySelector('#mutant-counter');
-  if (counterSpan) {
-    counterSpan.textContent = currentUpdatedCount;
+  const counterDiv = container.querySelector('.counter');
+  if (counterDiv) {
+    counterDiv.innerHTML = `${getCounterLabel()} <span id="mutant-counter">${currentUpdatedCount}</span>`;
   }
 
   container.querySelectorAll('.row').forEach(el => el.remove());
@@ -157,10 +167,17 @@ export async function render(entries, updatedCount) {
     row.dataset.id = id;
 
     row.appendChild(createColumnInfo(entry.new, namesMap[id] || id));
-    row.appendChild(createStats(entry.old, id));
-    row.appendChild(createStats(entry.new, id, entry.old));
-    row.appendChild(createDiffScaled(entry.old, entry.new, id));
-    row.appendChild(createAlertsColumn(entry.old, entry.announced, entry.new, id));
+
+    if (currentMode === 'rebalance') {
+      row.appendChild(createStats(entry.old, id));
+      row.appendChild(createStats(entry.new, id, entry.old));
+      row.appendChild(createDiffScaled(entry.old, entry.new, id));
+      row.appendChild(createAlertsColumn(entry.old, entry.announced, entry.new, id));
+    } else {
+      const statsDiv = createStats(entry.new, id);
+      statsDiv.classList.add('col-wide');
+      row.appendChild(statsDiv);
+    }
 
     container.appendChild(row);
   });
@@ -172,37 +189,27 @@ function updateTopHeaderTexts() {
   if (!topHeaderEl) return;
   const counterSpan = topHeaderEl.querySelector('.counter');
   if (counterSpan) {
-    const updatedText = langMap.updated || '🧬 Mutantes actualizados:';
     const counterValue = counterSpan.querySelector('#mutant-counter');
-    if (counterValue) {
-      counterSpan.innerHTML = `${updatedText} <span id="mutant-counter">${counterValue.textContent}</span>`;
-    }
+    const value = counterValue ? counterValue.textContent : '0';
+    counterSpan.innerHTML = `${getCounterLabel()} <span id="mutant-counter">${value}</span>`;
   }
   const legendSpan = topHeaderEl.querySelector('.legend');
   if (legendSpan) {
     legendSpan.innerHTML = `
-      <span class="red">🔴 ${langMap.legend_nerf || 'NERF'}</span>
-      <span class="green">🟢 ${langMap.legend_buff || 'BUFF'}</span>
-      <span class="changed">🟣 ${langMap.legend_rework || 'REWORK'}</span>
+      <span class="red">${langMap.legend_nerf || ''}</span>
+      <span class="green">${langMap.legend_buff || ''}</span>
+      <span class="changed">${langMap.legend_rework || ''}</span>
     `;
   }
   const toggleBtn = topHeaderEl.querySelector('#toggle-calculated-btn');
   if (toggleBtn) {
-    toggleBtn.textContent = langMap.toggle_calculated || "Estadísticas calculadas";
+    toggleBtn.textContent = langMap.toggle_calculated || '';
+  }
+  const modeBtn = topHeaderEl.querySelector('#mode-btn');
+  if (modeBtn) {
+    modeBtn.textContent = getModeButtonText();
   }
   updateLangButtons(currentLang);
-}
-
-function updateHeaderRowTexts() {
-  if (!headerRowEl) return;
-  const cols = headerRowEl.querySelectorAll('div');
-  if (cols.length >= 5) {
-    cols[0].textContent = langMap.col_mutant || "Mutante";
-    cols[1].textContent = langMap.col_before || "Antes";
-    cols[2].textContent = langMap.col_after || "Después";
-    cols[3].textContent = langMap.col_change || "Cambio";
-    cols[4].textContent = langMap.col_alerts || "Alertas";
-  }
 }
 
 function updateLangButtons(lang) {
@@ -216,76 +223,68 @@ function updateLangButtons(lang) {
   });
 }
 
-// --- Cambiar idioma (rápido, sin fetch) ---
 export async function setLanguage(lang) {
   if (lang === currentLang) return;
 
-  // 1. Cambiar idioma de la interfaz
   if (langCache[lang]) {
     langMap = langCache[lang];
     currentLang = lang;
   } else {
-    // Fallback (no debería ocurrir porque precargamos)
     const map = await loadLangFile(lang);
     if (map) {
       langCache[lang] = map;
       langMap = map;
       currentLang = lang;
     } else {
-      // Si falla, mantener el actual
       return;
     }
   }
 
-  // 2. Cambiar mapa de nombres (usando caché precargado)
   if (namesCache[lang]) {
     namesMap = namesCache[lang];
   } else {
-    // Fallback (no debería ocurrir)
     namesMap = {};
   }
 
-  // 3. Actualizar interfaz sin re-renderizar toda la tabla
-  //    (pero como las estadísticas dependen del idioma, re-renderizamos con los mismos datos)
   if (currentData.length > 0) {
-    // Actualizar título y textos antes de re-renderizar
-    const titleElement = document.getElementById("title");
-    if (titleElement) {
-      const titleTemplate = langMap.title || "🧪 {count} mutantes relevantes";
-      titleElement.textContent = titleTemplate.replace('{count}', currentData.length);
-    }
-    // Re-renderizar (rápido porque todo está en memoria)
-    render(currentData, currentUpdatedCount);
+    updateTitle(currentData.length);
+    render(currentData, currentUpdatedCount, currentMode);
   }
 }
 
-// --- Top header ---
-function createTopHeader(initialText = 'Cargando datos...') {
+function createTopHeader(initialText = '0') {
   const topHeader = document.createElement("div");
   topHeader.className = "top-header";
 
   const counterSpan = document.createElement("div");
   counterSpan.className = "counter";
-  const updatedText = langMap.updated || '🧬 Mutantes actualizados:';
-  counterSpan.innerHTML = `${updatedText} <span id="mutant-counter">${initialText}</span>`;
+  counterSpan.innerHTML = `${getCounterLabel()} <span id="mutant-counter">${initialText}</span>`;
 
   const legendSpan = document.createElement("div");
   legendSpan.className = "legend";
   legendSpan.innerHTML = `
-    <span class="red">🔴 ${langMap.legend_nerf || 'NERF'}</span>
-    <span class="green">🟢 ${langMap.legend_buff || 'BUFF'}</span>
-    <span class="changed">🟣 ${langMap.legend_rework || 'REWORK'}</span>
+    <span class="red">${langMap.legend_nerf || ''}</span>
+    <span class="green">${langMap.legend_buff || ''}</span>
+    <span class="changed">${langMap.legend_rework || ''}</span>
   `;
 
   const toggleBtn = document.createElement("button");
   toggleBtn.id = "toggle-calculated-btn";
-  toggleBtn.textContent = langMap.toggle_calculated || "Estadísticas calculadas";
+  toggleBtn.textContent = langMap.toggle_calculated || '';
   toggleBtn.className = "toggle-btn" + (calculatedMode ? " active" : "");
   toggleBtn.onclick = toggleCalculatedMode;
 
+  const modeBtn = document.createElement("button");
+  modeBtn.id = "mode-btn";
+  modeBtn.className = "toggle-btn mode-btn";
+  modeBtn.textContent = getModeButtonText();
+  modeBtn.onclick = () => {
+    if (onModeChange) onModeChange();
+  };
+
   const langBtnContainer = document.createElement("div");
   langBtnContainer.className = "lang-buttons";
-  
+
   const btnEs = document.createElement("button");
   btnEs.textContent = "ES";
   btnEs.className = "lang-btn" + (currentLang === 'es' ? " active" : "");
@@ -298,75 +297,39 @@ function createTopHeader(initialText = 'Cargando datos...') {
   btnEn.dataset.lang = "en";
   btnEn.onclick = () => setLanguage('en');
 
-  const indicator = document.createElement("span");
-  indicator.id = "show-all-indicator";
-  indicator.style.display = "none";
-  indicator.style.marginLeft = "10px";
-  indicator.style.color = "#ffaa00";
-  indicator.textContent = "🔓 Modo completo";
-  topHeader.append(indicator);
-
   langBtnContainer.append(btnEs, btnEn);
-  topHeader.append(counterSpan, legendSpan, toggleBtn, langBtnContainer);
+  topHeader.append(counterSpan, legendSpan, toggleBtn, modeBtn, langBtnContainer);
   return topHeader;
-}
-
-
-
-
-
-
-// --- Carga de nombres (con caché por idioma) ---
-async function loadNames() {
-  if (namesLoaded && namesLang === currentLang) return namesMap;
-  if (loadingNames) {
-    while (loadingNames) await new Promise(resolve => setTimeout(resolve, 50));
-    return namesMap;
-  }
-  loadingNames = true;
-  try {
-    const url = `https://s-beta.kobojo.com/mutants/gameconfig/localisation_${currentLang}.txt?t=${Date.now()}`;
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const txt = await response.text();
-    const map = {};
-    txt.split("\n").forEach(line => {
-      const [id, name] = line.split(";");
-      if (id && name) map[id] = name.trim();
-    });
-    namesMap = map;
-    namesLoaded = true;
-    namesLang = currentLang;
-    console.log(`✅ Nombres cargados (${currentLang}): ${Object.keys(map).length} entradas`);
-  } catch (error) {
-    console.error(`❌ Error al cargar localisation_${currentLang}.txt:`, error);
-    namesMap = {};
-    namesLoaded = true;
-    namesLang = currentLang;
-  } finally {
-    loadingNames = false;
-  }
-  return namesMap;
 }
 
 function createHeaderRow() {
   const headerRow = document.createElement("div");
   headerRow.className = "header-row";
+
   const col1 = document.createElement("div");
-  col1.textContent = langMap.col_mutant || "Mutante";
-  const col2 = document.createElement("div");
-  col2.textContent = langMap.col_before || "Antes";
-  const col3 = document.createElement("div");
-  col3.textContent = langMap.col_after || "Después";
-  const col4 = document.createElement("div");
-  col4.textContent = langMap.col_change || "Cambio";
-  const col5 = document.createElement("div");
-  col5.textContent = langMap.col_alerts || "Alertas";
-  headerRow.append(col1, col2, col3, col4, col5);
+  col1.textContent = langMap.col_mutant || '';
+  headerRow.appendChild(col1);
+
+  if (currentMode === 'rebalance') {
+    const col2 = document.createElement("div");
+    col2.textContent = langMap.col_before || '';
+    const col3 = document.createElement("div");
+    col3.textContent = langMap.col_after || '';
+    const col4 = document.createElement("div");
+    col4.textContent = langMap.col_change || '';
+    const col5 = document.createElement("div");
+    col5.textContent = langMap.col_alerts || '';
+    headerRow.append(col2, col3, col4, col5);
+  } else {
+    const col2 = document.createElement("div");
+    col2.textContent = langMap.col_stats || '';
+    col2.classList.add('col-wide');
+    headerRow.appendChild(col2);
+  }
+
   return headerRow;
 }
 
-// --- Hover ---
 function setupHighlightEvents(container) {
   container.removeEventListener('mouseenter', highlightMouseEnter);
   container.removeEventListener('mouseleave', highlightMouseLeave);
@@ -394,7 +357,6 @@ function highlightMouseLeave(e) {
     .forEach(el => el.classList.remove('highlight'));
 }
 
-// --- Toggle ---
 export function toggleCalculatedMode() {
   calculatedMode = !calculatedMode;
   const btn = document.getElementById('toggle-calculated-btn');
@@ -412,10 +374,18 @@ function updateRow(id) {
   newRow.className = "row";
   newRow.dataset.id = id;
   newRow.appendChild(createColumnInfo(entry.new, namesMap[id] || id));
-  newRow.appendChild(createStats(entry.old, id));
-  newRow.appendChild(createStats(entry.new, id, entry.old));
-  newRow.appendChild(createDiffScaled(entry.old, entry.new, id));
-  newRow.appendChild(createAlertsColumn(entry.old, entry.announced, entry.new, id));
+
+  if (currentMode === 'rebalance') {
+    newRow.appendChild(createStats(entry.old, id));
+    newRow.appendChild(createStats(entry.new, id, entry.old));
+    newRow.appendChild(createDiffScaled(entry.old, entry.new, id));
+    newRow.appendChild(createAlertsColumn(entry.old, entry.announced, entry.new, id));
+  } else {
+    const statsDiv = createStats(entry.new, id);
+    statsDiv.classList.add('col-wide');
+    newRow.appendChild(statsDiv);
+  }
+
   row.replaceWith(newRow);
 }
 
@@ -423,7 +393,6 @@ function refreshAllRows() {
   currentData.forEach(entry => updateRow(entry.id));
 }
 
-// --- Alertas ---
 function createAlertsColumn(oldData, announcedData, newData, id) {
   const div = document.createElement("div");
 
@@ -443,13 +412,12 @@ function createAlertsColumn(oldData, announcedData, newData, id) {
 
     if (announcedVal !== null) {
       if (announcedVal === oldVal && newVal !== oldVal) {
-        alertMsg = langMap.alert_unannounced || "Este cambio no estaba anunciado";
+        alertMsg = langMap.alert_unannounced || '';
       } else if (announcedVal !== oldVal && newVal === oldVal) {
-        const template = langMap.alert_not_arrived || "No llegó el cambio anunciado de {value}";
-        alertMsg = template.replace('{value}', formatAlertValue(announcedVal, key));
+        alertMsg = (langMap.alert_not_arrived || '')
+          .replace('{value}', formatAlertValue(announcedVal, key));
       } else if (announcedVal !== oldVal && newVal !== oldVal && announcedVal !== newVal) {
-        const template = langMap.alert_announced_diff || "Se anunció un cambio de {announced} pero el cambio real es {real}";
-        alertMsg = template
+        alertMsg = (langMap.alert_announced_diff || '')
           .replace('{announced}', formatAlertValue(announcedVal, key))
           .replace('{real}', formatAlertValue(newVal, key));
       }
@@ -476,7 +444,6 @@ function formatAlertValue(val, key) {
   return Math.floor(val);
 }
 
-// --- Multiplicadores ---
 function getAttackValue(atk, isPlus, mod) {
   const base = isPlus && calculatedMode ? calcRealDamage(atk.value) : atk.value;
   return Math.floor(base * mod);
@@ -511,7 +478,6 @@ function getMultipliers(id) {
   };
 }
 
-// --- Columnas ---
 function createColumnInfo(data, name) {
   const div = document.createElement("div");
   const img = document.createElement("img");
@@ -598,30 +564,31 @@ function createGachaButton(gachaId, specimenId) {
   return btn;
 }
 
-// --- Estadísticas ---
 function createStats(data, id, oldData = null) {
   const div = document.createElement("div");
   const mult = getMultipliers(id);
 
-  addStat(div, "life.png", langMap.stat_life || "Vida", data.life * mult.life, oldData ? oldData.life * mult.life : null, 'life');
-  addStat(div, "speed.png", langMap.stat_speed || "Velocidad", data.speed, oldData?.speed, 'speed', true);
+  addStat(div, "life.png", langMap.stat_life, data.life * mult.life, oldData ? oldData.life * mult.life : null, 'life');
+  addStat(div, "speed.png", langMap.stat_speed, data.speed, oldData ? oldData.speed : null, 'speed', true);
 
-  addAttack(div, langMap.stat_attack1 || "Ataque 1", data.atk1, data.unlock["1"], mult.atk,
+  addAttack(div, langMap.stat_attack1, data.atk1, data.unlock["1"], mult.atk,
     oldData ? getAttackValue(oldData.atk1, false, mult.atk) : null, false, 'atk1',
     oldData ? oldData.atk1 : null, oldData ? oldData.unlock["1"] : null);
-  addAttack(div, langMap.stat_attack1p || "Ataque 1+", data.atk1p, data.unlock["1p"], mult.atk,
+  addAttack(div, langMap.stat_attack1p, data.atk1p, data.unlock["1p"], mult.atk,
     oldData ? getAttackValue(oldData.atk1p, true, mult.atk) : null, true, 'atk1p',
     oldData ? oldData.atk1p : null, oldData ? oldData.unlock["1p"] : null);
-  addAttack(div, langMap.stat_attack2 || "Ataque 2", data.atk2, data.unlock["2"], mult.atk,
+  addAttack(div, langMap.stat_attack2, data.atk2, data.unlock["2"], mult.atk,
     oldData ? getAttackValue(oldData.atk2, false, mult.atk) : null, false, 'atk2',
     oldData ? oldData.atk2 : null, oldData ? oldData.unlock["2"] : null);
-  addAttack(div, langMap.stat_attack2p || "Ataque 2+", data.atk2p, data.unlock["2p"], mult.atk,
+  addAttack(div, langMap.stat_attack2p, data.atk2p, data.unlock["2p"], mult.atk,
     oldData ? getAttackValue(oldData.atk2p, true, mult.atk) : null, true, 'atk2p',
     oldData ? oldData.atk2p : null, oldData ? oldData.unlock["2p"] : null);
 
-  addAbility(div, langMap.stat_ability || "Habilidad", data.ability1, data.abilities.a1, oldData?.ability1, 'ability1', oldData ? oldData.abilities.a1 : null);
-  addAbility(div, langMap.stat_ability_plus || "Habilidad+", data.ability2, data.abilities.a2, oldData?.ability2, 'ability2', oldData ? oldData.abilities.a2 : null);
-  addStat(div, "credits.png", langMap.stat_credits || "Créditos", data.bank, oldData ? oldData.bank : null, 'bank');
+  addAbility(div, langMap.stat_ability, data.ability1, data.abilities.a1,
+    oldData ? oldData.ability1 : null, 'ability1', oldData ? oldData.abilities.a1 : null);
+  addAbility(div, langMap.stat_ability_plus, data.ability2, data.abilities.a2,
+    oldData ? oldData.ability2 : null, 'ability2', oldData ? oldData.abilities.a2 : null);
+  addStat(div, "credits.png", langMap.stat_credits, data.bank, oldData ? oldData.bank : null, 'bank');
 
   return div;
 }
@@ -648,10 +615,10 @@ function addStat(parent, iconName, label, value, oldValue = null, statType = '',
     displayValue = Math.floor(value);
   }
 
-  left.append(icon, document.createTextNode(label));
+  left.append(icon, document.createTextNode(label || ''));
   right.textContent = displayValue;
 
-  if (oldValue !== null) {
+  if (oldValue !== null && oldValue !== undefined) {
     if (value > oldValue) right.classList.add("green");
     if (value < oldValue) right.classList.add("red");
   }
@@ -674,7 +641,8 @@ function addAttack(parent, label, atk, gen, mod, oldAtkValue = null, isPlus = fa
   const icon = createAttackIcon(gen, atk);
   const value = getAttackValue(atk, isPlus, mod);
 
-  let labelText = label + (atk.aoe ? (langMap.triple || " Triple") : "");
+  let labelText = label || '';
+  if (atk.aoe) labelText += langMap.triple || '';
   const labelSpan = document.createElement("span");
   labelSpan.textContent = labelText;
   if (oldGen !== null && oldGen !== undefined && oldGen !== gen) {
@@ -687,7 +655,7 @@ function addAttack(parent, label, atk, gen, mod, oldAtkValue = null, isPlus = fa
 
   right.textContent = Math.floor(value);
 
-  if (oldAtkValue !== null) {
+  if (oldAtkValue !== null && oldAtkValue !== undefined) {
     if (value > oldAtkValue) right.classList.add("green");
     if (value < oldAtkValue) right.classList.add("red");
   }
@@ -732,9 +700,9 @@ function addAbility(parent, label, val, ability, oldVal = null, statType = '', o
   const right = document.createElement("div");
   right.className = "right";
 
-  const icon = createAbilityIcon(ability, label.includes("+"));
+  const icon = createAbilityIcon(ability, (label || '').includes("+"));
   const labelSpan = document.createElement("span");
-  labelSpan.textContent = label;
+  labelSpan.textContent = label || '';
   if (oldAbility !== null && oldAbility !== undefined && oldAbility !== ability) {
     labelSpan.classList.add("changed");
   }
@@ -742,7 +710,7 @@ function addAbility(parent, label, val, ability, oldVal = null, statType = '', o
 
   right.textContent = val + "%";
 
-  if (oldVal !== null) {
+  if (oldVal !== null && oldVal !== undefined) {
     const absVal = Math.abs(val);
     const absOld = Math.abs(oldVal);
     if (absVal > absOld) {
@@ -776,7 +744,6 @@ function createAbilityIcon(ability, isPlus) {
   return wrapper;
 }
 
-// --- Diferencias ---
 function createDiffScaled(oldD, newD, id) {
   const div = document.createElement("div");
   const oldStats = getFinalStats(oldD, id);
@@ -871,7 +838,6 @@ function addDiff(parent, oldVal, newVal, isAbility = false, isSpeed = false, sta
   parent.appendChild(row);
 }
 
-// --- Gachas ---
 let gachaMap = {};
 
 async function loadGachas() {
@@ -891,7 +857,7 @@ async function loadGachas() {
         const specimenId = spec.getAttribute("specimen");
         const stars = parseInt(spec.getAttribute("stars"), 10);
         const bonus = parseInt(spec.getAttribute("bonus"), 10);
-        
+
         if (specimenId === "Specimen_FD_03" && gachaId !== "japan") {
           continue;
         }
@@ -900,32 +866,10 @@ async function loadGachas() {
         gachaMap[specimenId].push({ gachaId, stars, bonus });
       }
     }
-    console.log(`✅ Gachas cargados: ${Object.keys(gachaMap).length} specimens`);
   } catch (error) {
-    console.error("❌ Error al cargar gacha.xml:", error);
   } finally {
     gachaLoaded = true;
   }
-}
-
-let showAllMutants = false;
-
-export function toggleShowAll(value) {
-  showAllMutants = value;
-  // Aquí podrías actualizar algún indicador visual, ej. un texto en el top-header
-  const indicator = document.getElementById('show-all-indicator');
-  if (indicator) {
-    if (showAllMutants) {
-      indicator.textContent = '🔓 Modo completo';
-      indicator.style.display = 'inline';
-    } else {
-      indicator.style.display = 'none';
-    }
-  }
-}
-
-export function isShowAll() {
-  return showAllMutants;
 }
 
 function getStarBonus(stars) {
